@@ -43,3 +43,20 @@ vue create xxx
 vue add electron-builder
 ```
 1. 手动调整代码结构
+
+
+
+## 库
+* [axios](https://github.com/axios/axios) 支持Promise的HTTP客户端
+* [cheerio](https://github.com/cheeriojs/cheerio) 轻量级的JQuery核心实现
+   * 用于解析HTML内容
+* [electron-log](https://github.com/megahertz/electron-log) 输出日志
+* [form-data](https://github.com/form-data/form-data) 创建muliipart/form-data流
+   * 用于上传文件
+* [moment](https://github.com/moment/moment/) 时间处理库
+   * [中文文档](http://momentjs.cn/)
+* [fs-extra](https://github.com/jprichardson/node-fs-extra) Node.js文件库的扩展
+* [bluebird](https://github.com/petkaantonov/bluebird) Promise实现库
+* [iconv-lite](https://github.com/ashtuchkin/iconv-lite) 编码转换库
+* [watch](https://github.com/mikeal/watch) 文件夹监控
+* [rimraf](https://github.com/isaacs/rimraf)  删除目录
