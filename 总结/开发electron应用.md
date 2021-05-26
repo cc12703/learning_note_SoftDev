@@ -40,9 +40,8 @@ vue create xxx
 ```
 1. 使用 Vue CLI Plugin Electron Builder 转换工程
 ```shell
-vue add electron-builder
+vue add @cc12703m/electron-builder
 ```
-1. 手动调整代码结构
 
 
 
