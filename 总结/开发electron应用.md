@@ -59,3 +59,4 @@ vue add @cc12703m/electron-builder
 * [iconv-lite](https://github.com/ashtuchkin/iconv-lite) 编码转换库
 * [watch](https://github.com/mikeal/watch) 文件夹监控
 * [rimraf](https://github.com/isaacs/rimraf)  删除目录
+* [qs](https://github.com/ljharb/qs) url参数转换库
