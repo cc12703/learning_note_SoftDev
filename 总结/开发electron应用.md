@@ -21,6 +21,7 @@
     src/
         background.ts  系统启动文件
         main.ts       界面启动文件
+        preload.ts    预加载文件
         common/    公共代码
            types/   ts数据类型定义
         main/      后台功能代码（运行在主进程）
@@ -60,3 +61,18 @@ vue add @cc12703m/electron-builder
 * [watch](https://github.com/mikeal/watch) 文件夹监控
 * [rimraf](https://github.com/isaacs/rimraf)  删除目录
 * [qs](https://github.com/ljharb/qs) url参数转换库
+
+
+
+## 图标
+* 搜索svg图标
+   * [阿里巴巴矢量图标库](https://www.iconfont.cn/)
+* 编辑svg图标
+   * [菜鸟工具](https://c.runoob.com/more/svgeditor/)
+* svg转换成png
+   1. 安装 `brew install imagemagick`
+   1. 生成 `convert -set TheOutputSizeOfThePng 1024x1024 test.svg test.png`
+* png转icns
+   1. appstore中安装 icnstool 软件
+   1. 准备一张1024 * 1204的png图片
+   1. 使用软件直接生成
