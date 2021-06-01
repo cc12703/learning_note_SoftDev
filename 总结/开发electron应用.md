@@ -71,7 +71,7 @@ vue add @cc12703m/electron-builder
    * [菜鸟工具](https://c.runoob.com/more/svgeditor/)
 * svg转换成png
    1. 安装 `brew install imagemagick`
-   1. 生成 `convert -set TheOutputSizeOfThePng 1024x1024 test.svg test.png`
+   1. 生成 `convert -resize 1024x1024 test.svg test.png`
 * png转icns
    1. appstore中安装 icnstool 软件
    1. 准备一张1024 * 1204的png图片
