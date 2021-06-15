@@ -1,6 +1,6 @@
 
 
-# Python3
+# Python3语法
 
 [TOC]
 
@@ -31,14 +31,24 @@ digraph G {
 
 
 ### 内建函数
-* `<int> = len(<col>)`  获取序列长度
+* `<int> = len(<col>)`           获取序列长度
 * `<int> = sum(<iter>, [init])`  计算序列和
-* `<el> = max(<iter>, [key])`  返回序列中的最大元素   
-* `<el> = min(<iter>, [key])`  返回序列中的最小元素   
-* `<iter> = reversed(<seq>)`    反转序列
+* `<el> = max(<iter>, [key])`    返回序列中的最大元素   
+* `<el> = min(<iter>, [key])`    返回序列中的最小元素   
+* `<iter> = reversed(<seq>)`     反转序列
 * `<list> = sorted(<iter>, [key], [reverse_flag])` 排序序列
-* `<enumerate> = enumerate(<inter>)`  每个元素是都都是(index, item)格式
+
+* `<enumerate> = enumerate(<iter>)`    每个元素是都都是(index, item)格式
 * `<iter of tuple> = zip(<iter> ...)`  将多个序列对象打包成一个个元组
+
+* `<iter> = filter(<func>, <iter>)`    过滤一个序列
+   * `<func> : <bool> = func(<item>)`  函数原型
+* `<iter> = map(<func>, <iter_1>, <iter_2>, ...)`       过滤多个序列
+   * `<func> :  <item> = func(<item_1>, <item_2>, ...)` 函数原型
+
+* `value = reduce(<func>, <iter>, init_value)`   合并序列，该函数位于functools包中
+   * `<func> : value = func(last_value, <item>)` 函数原型
+
 
 #### 示例
 ```python
@@ -53,6 +63,16 @@ list(enumerate(['Spring', 'Summer', 'Fall', 'Winter']))
 
 list(zip([1, 2, 3], [4, 5, 6]))
 >>> [(1,4), (2,5), (3,6)]
+
+
+list(filter(lambda n: n%2, [1, 2, 3, 4]))
+>>> [1, 3]
+
+list(map(lambda x, y: x + y, [1,3,5], [2,4,6]))
+>>> [3, 7, 11]
+
+reduce(lambda x,y: x + y, [0,1,2,3,4], 0)
+>>> 10
 ```
 
 
@@ -157,11 +177,24 @@ list(zip([1, 2, 3], [4, 5, 6]))
 * `<view> = <dict>.items()`  返回条目视图，包含键-值元组
 
 
-## 类型
+## 类型相关
+
+
+### 获取类型
+* 任何事物都是一个对象
+* 任何对象都有一个类型
+* 类型和类是相同的
+
+* `<type> = type(<el>)` 获取类型
+* `<type> = <el>.class` 获取类型
+* `<bool> = isintance(<el>, <type>`          判断是否是某类型实例
+* `<bool> = issubclass(type(<el>), <type>)`  判断是否是某类型实例
+
+
 
 ### 格式化
-* `<str> = f"xxx {<el_1>}, {<el_2>}"` 
-* `<str> = "xxx {}, {}".format(<el_1>, <el_2>)`
+* `<str> = f"xxx {<el_1>}, {<el_2>}"`            f-string语法
+* `<str> = "xxx {}, {}".format(<el_1>, <el_2>)`  str.format()方法
 
 #### 示例
 ```python
@@ -190,7 +223,10 @@ f"hello {name}, You are {arg}
 * `<str> = <str>.replace(old, new)` 使用new字符串替换old字符串
 
 
+
+
 ## 语法
+
 
 ### 导入
 * `import <module>`    导入模块
@@ -212,4 +248,215 @@ from ..common_util import setup
 from ..Fax import G3.dial
 ```
 
+
+
+### 类
+
+#### 创建
+```python
+class Hello(object) :
+    foo = 100             #类属性
+
+    def __init__(self) :  #构造函数
+        self.data = 1     #实例属性
+        self.__pData = 1  #私有的实例属性
+
+    def incData(self) :   #实例方法
+        self.data = self.data + 1  
+
+    @staticmethod
+    def foo() :           #静态方法
+        pass
+
+    @classmethod    
+    def foo(cls) :   #    类方法
+        pass 
+```
+
+#### 继承
+```python
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age  = age
+
+class Employee(Person):
+    def __init__(self, name, age, staff_num):
+        super().__init__(name, age)
+        self.staff_num = staff_num
+```
+
+#### 属性
+```python
+class MyClass :
+
+
+   @Property
+   def a(self) :
+      return self.__a
+
+   @a.setter
+   def a(self, value) :
+      self.__a = value
+      
+```
+```
+>>> el = MyClass()
+>>> el.a = 123
+```
+
+
+### lambda
+* 用于创建匿名函数
+* `lambda [arg_1, arg_2, ...]: <expression>` 定义语法
+
+
+#### 示例
+```python
+lambda x, y: x + y
+
+
+a = lambda x, y=2: x + y
+a(3)
+a(3, 6)
+```
+
+
+
 ### 异常
+
+#### try-except
+```python
+try:
+    <code>
+except <exception> :
+    <code>
+except <exception> as <name> :
+    <code>
+except (exception_1, exception_2) :
+    <code>
+```
+
+#### try-finally
+```python
+try:
+    <code_for_normal>
+except <exception_a>:
+    <code_for_exception_a>
+except <exception_b>:
+    <code_for_exception_b>
+else:
+    <code_for_no_exception>
+finally:
+    <code_always>
+```
+
+#### Catching
+* `except <exception> :`  
+* `except <exception> as <name> :` 捕获异常并获取其实例
+* `except (<exception>, [...]) :` 捕获多个异常
+* `except (<exception>, [...]) as <name> :`
+
+#### Raising
+* `raise <exception>`
+* `raise <exception>()`
+* `raise <exception>(<el> [, ...])`
+
+#### Built-in
+* BaseException 所有异常的基类
+* SystemExit   解释器请求退出
+* Exception 常规错误的基类
+* StopInteration 迭代器没有更多的值
+* Warning 警告的基类
+
+
+
+### 枚举
+
+#### 定义
+```python
+from enum import Enum, auto
+class <enum_name>(Enum):
+    <member_name_1> = <value_1>
+    <member_name_2> = <value_2_a>, <value_2_b>
+    <member_name_3> = auto()
+```
+
+##### 示例
+```python
+from enum import Enum
+
+class Color(Enum):
+   RED = 1
+   GREEN = 2
+   BLUE = 3
+```
+
+#### 操作
+* `<member> = <enum>.<member_name>`  获取成员字段
+* `<member> = <enum>['<member_name>']`  获取成员字段，或抛出KeyError
+* `<member> = <enum>(<value>)` 获取成员字段，或抛出ValueError
+* `<str>    = <member>.name`   获取成员字段名字
+* `<obj>    = <member>.value`  获取成员字段值
+
+##### 示例
+```python
+Color['RED']
+>>> <Color.RED: 1>
+
+Color.RED
+>>> <Color.RED: 1>
+
+Color(1)
+>>> <Color.RED: 1>
+
+Color.RED.name
+>>> ‘RED’
+
+Color.RED.value
+>>> 1
+```
+
+
+### 类型标注
+* `arg_name: <type>`         参数标注
+* `def (...) -> <type>`      返回值标注
+* `<type> = <struct_type>[<type>]`  定义类型别名
+
+
+#### 示例
+```python
+from typing import List
+
+def plus(a: int, b: int = 2) -> int :
+    return a + b
+
+def func(name: str) -> List[str] :
+    pass
+
+ConnectionOptions = Dict[str, str]
+Address = Tuple[str, int]
+Server = Tuple[Address, ConnectionOptions]
+
+```
+
+### 基本类型
+* `Number, String, Tuple` 不可变，可从typing中导出
+* `List, Dict, Set` 可变，可从typing中导出
+* `int, float, bool, complex` 数字类型
+
+
+
+### 其他
+* `X if C else Y` 三元操作符
+* `with context_expr [as var]` 用于简化资源的分配和释放
+
+
+#### 示例
+```python
+smaller = x if x  < y else y
+
+with open('/etc/passwd', 'r') as f:
+    for eachLine in f:
+        #...
+```
