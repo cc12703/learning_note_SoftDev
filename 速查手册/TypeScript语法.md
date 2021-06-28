@@ -1,0 +1,444 @@
+
+
+# TypeScript语法
+
+[TOC]
+
+## 说明
+* `<xxx>` 表示类型
+* `[xxx]` 表示可选
+
+* ECMAScript是 JavaScript 的规范
+	* 包括 ES5（ES2009），ES6（ES2015）多个版本
+* TypeScript实现了ECMAScript，并加入了类型系统
+
+
+## 集合
+
+### 概述
+* Array: 有序，可重复，类型需要一样
+* Tuple: 有序，可重复，类型可以不一样
+* Set:   无序，无重复，类型需要一样
+
+
+### Array
+* `<array> = new Array(<len>)` 定义空数组
+* `<array> = [<el_1>, <el_2>, <el_3>]` 定义数组
+* `<array> = new Array(<el_1>, <el_2>, <el_3>)` 定义数组
+
+* `<len> = <array>.length`  获取数组长度
+* `<array>.length = 0`      清空数组
+* `<len> = <array>.push(<el_1>, <el_2>)` 向尾部加入多个元素，并返回新的长度
+* `<elm> = <array>.pop()`  从尾部移除元素，并返回该元素
+* `<index = <array>.indexOf(elm)` 返回给定元素的首个索引，无返回-1
+* `<index = <array>.lastIndexOf(elm)` 返回给定元素的最后一个索引，无返回-1
+* `<elm> = <array>.find(elm => <cond>)` 查找元素，返回第一个匹配的元素
+* `<index> = <array>.findIndex(elm => <cond>)` 查找元素，返回第一个匹配元素的索引值，无返回-1
+
+* `<array>.forEach(elm => <oper>)`          遍历元素
+* `<array>.forEach((elm, index) => <oper>)` 遍历元素
+* `for(const val of <array>) { ... }`       遍历元素
+
+* `<bool> = <array>.every(elm => <cond>)` 测试是否所有元素都符合条件
+* `<bool> = <array>.some(elm => <cond>)` 测试是否有元素符合条件
+* `<array> = <array>.filter(elm => <cond>)` 过滤元素，并返回一个符合条件的新数组
+* `<array> = <array>.map(elm => <oper>)` 处理每个元素，并返回一个新数组
+* `<array> = <array>.map((elm, index) => <oper>)` 处理每个元素，并返回一个新数组
+* `<array> = <array>.flatMap(elm => <oper>)` 处理每个元素，将oper返回的嵌套数组扁平化
+* `<val> = <array>.reduce((result, elm) => <oper>, <init>)` 将数组合并为一个值
+
+* `<str> = <array>.join()` 使用逗号连接元素组成一个字符串
+* `<str> = <array>.join(sep)` 使用分隔符连接元素组成一个字符串
+
+
+
+#### 示例
+```ts 
+const words = ['spray', 'limit', 'elite', 'exuberant', 'destruction']
+
+word.every(word => word.startsWith('s'))
+//output: false
+
+words.some(word => word.startsWith('s'))
+//output: true
+
+words.filter(word => word.length > 6)
+//output: ["exuberant", "destruction"]
+
+words.map(word => word + "_ext")
+//output: ['spray_ext', 'limit_ext', 'elite_ext', 'exuberant_ext', 'destruction_ext']
+
+words.flatMap(word => [work, word + "_ext"])
+//output: ['spray', 'limit', 'elite', 'exuberant', 'destruction', 'spray_ext', 'limit_ext', 'elite_ext', 'exuberant_ext', 'destruction_ext']
+
+words.reduct((result, word) => result + "_" + word, "")
+//output: 'spray_limit_elite_exuberant_destruction'
+
+for(const word of words) {
+  console.log(word)
+}
+//outputs: spray \n limit \n elite \n exuberant \n destruction
+
+```
+
+
+### Map
+* `<map> = new Map()` 或 `<map> = {}`创建一个空映射
+* `<map> = new Map([[key_1, val_1], [key_2, val_2]])` 创建一个映射
+
+* `size = <map>.size` 获取映射大小，键值对的个数
+* `<map> = <map>.set(<ey, val)` 增加、更新元素
+* `val = <map>get(<ey)` 获取元素
+* `<bool> = <map>.has(key)` 判断元素是否存在
+* `<bool> = <map>.deletee(key)`  删除元素
+* `<map>.clear()` 清除所有元素
+
+* `<iter> = <map>.keys()` 返回一个包含键的遍历器
+* `<iter> = <map>.values()` 返回一个包含值的遍历器
+* `<iter> = <map>.entries()` 返回一个包含键值对的遍历器
+* `<map>.forEach(val => <oper>)` 遍历元素
+* `<map>.forEach((val, key) => <oper>)` 遍历元素，使用键值对
+
+
+#### 示例
+```ts
+for (const key of myMap.keys()) {
+  console.log(key)
+}
+
+for (const[key, value] of myMap.entries()) {
+  console.log(key + ' = ' + value)
+}
+
+myMap.forEach((value, key) => {
+  console.log(key + ' = ' + value)
+})
+
+```
+
+
+### Set
+* `<set> = new Set()`            创建一个空集合
+* `<set> = new Set([1,2,3,4])`   创建一个集合
+
+* `<size> = <set>.size`   获取集合大小
+* `<set> = <set>.add(<elm>)`  加入一个元素
+* `<bool> = <set>.has(<elm>)` 判断元素是否存在
+* `<bool> = <set>.delete(<elm>)` 移除指定元素
+* `<set>.clear()` 清除所有元素
+
+* `<set>.forEach(<elm> => { ... })` 遍历集合
+* `<set>.forEach((<elm>,<index>) => { ... })` 遍历集合
+
+
+
+### Tuple
+* `var: [<type_1>, <type_2>] = [val_1, val_2]` 创建元组
+
+
+
+#### 示例
+```ts
+let x: [string, number] = ['Hello', 10]
+```
+
+
+
+
+## 类型
+
+
+### 字符串 
+* > \<str> = \` xxx ${\<var>} xxxx \` 格式化
+* `<str> = <str>.toLowerCase()` 小写化
+* `<str> = <str>.toUpperCase()` 大写化
+* `<str> = <str>.trim()`        去除两边的空格
+* `<sub_str> = <str>.substring(start_index, end_index)` 返回一个子字符串，不包含end_index处的字符
+* `<sub_str> = <str>.substring(start_index)` 返回一个子字符串
+
+* `index = <str>.indexOf(<sub_str>, [from_index])`  搜索字符串首次出现的地方,（-1表示找不到）
+* `index = <str>.lastIndexOf(<sub_str>, [from_index])`  搜索字符串最后出现的地方,（-1表示找不到）
+
+* `<array> = <str>.split()`  使用空格拆分字符串
+* `<array> = <str>.split(sep)` 使用指定字符拆分字符串
+
+* `<bool> = <str>.startsWith(<sub_str>)` 字符串头部是否包含指定字符
+* `<bool> = <str>.endsWith(<sub_str>)` 字符串尾部是否包含指定字符
+
+* `<str> = <str>.replace(<old_str>, <new_str>)` 使用新字符串替换老字符串首次出现的地方
+* `<str> = <str>.replaceAll(<old_str>, <new_str>)` 使用新字符串替换老字符串每次出现的地方
+* `<str> = <str>.replace(<regex>, <new_str>)` 使用新字符串替换匹配正则表达式的每个地方
+* `index = <str>.search(<regex>)` 搜索正则表达式，（-1表示找不到）
+
+
+#### 示例
+```ts
+const str = 'Mozilla Over End'
+
+str.substring(1,3)
+//output: 'oz'
+
+str.substring(2)
+//output: 'zilla Over End'
+
+str.split(' ')
+//output: ['Mozilla', 'Over', 'End']
+```
+
+
+### 类
+* `class`       定义类
+* `extends`     继承类
+* `static`      定义静态成员和函数
+* `abstract`    定义抽象类和函数
+* `constructor` 定义成员变量
+* 成员和函数默认为 public
+
+#### 示例
+```ts
+class Point {
+
+  static instances = 0
+
+  x: number
+  y: number
+  members = []
+    
+  constructor(x: number, y: number) {
+    this.x = x
+    this.y = y
+    Point.instances++
+  }
+}
+
+class Point3D extends Point {
+  z: number
+  
+  constructor(x: number, y: number, z: number) {
+    super(x, y)
+    this.z = z
+  }
+}
+```
+
+### 枚举
+
+
+
+
+## 基础
+
+
+### 概述
+* 只使用`===`和`!==`来进行比较
+* 只使用`let`和`const`来定义变量
+
+
+### 解构
+* `[var_1, var_2] = [ ... ]`                数组解构
+* `[var_1, var_2, ...var_other] = [ ... ]`  数组解构剩余
+* `[var_1, , ...var_other] = [ ... ]`       数组解构忽略
+
+* `{var_1, var_2} = { ... }`           对象解构
+* `{var_1, var_2, {var_3}} = { ... }`  嵌套对象解构
+
+#### 示例
+```ts
+const [x, y] = [1, 2]
+//output: 1, 2
+const [x, y, ...others] = [1, 2, 3, 4]
+//outputs: 1, 2, [3, 4]
+const [x, , ...others] = [1, 2, 3, 4]
+//outputs: 1, [3, 4]
+
+
+const {x, y, width, height} = { x: 0, y: 10, width: 15, height: 20}
+const {bar: {bas}} = { bar: { bas: 123} }
+```
+
+
+### 箭头函数
+* `=>` 又称为 胖箭头函数、lambda函数
+* 功能：不需要使用function, 可以捕获this, 可以捕获 arguments
+
+#### 示例
+```ts
+const inc = (x) => x + 1
+
+class Person {
+    constructor(public age:number) {}
+    growOld = () => {
+        this.age++
+    }
+}
+//使用
+const person = new Person(1)
+person.growOld()
+```
+
+
+
+### 类型注解
+* `num: number`         数字类型
+* `str: string`         字符串类型
+* `isSucc: boolean`     布尔类型
+* `array: boolean[]`    数组类型
+* `nameNumber: [string, number]`   元组类型
+* `map: { [key:number] : string }`  映射类型
+* `name: { first: string, second: string }` 内联方式
+* `function reverse<T>(items: T[]): T[] { ... }`   泛型方式
+* `command: string[] | string`   联合类型
+* `type <name> = <type_1> | <type_2>`   类型别名
+
+#### 示例
+```ts
+type StrOrNum = string | number
+type Text = string | { text: string }
+type Callback = (data: string) => void
+```
+
+
+### 全局声明
+* `declare var name: <type>`   声明全局变量
+* `declare function name(<param>): <type>`  声明全局函数
+* `declare global { ... }`     扩展已存在的全局变量
+* `declare namespace name { ... }`  声明全局命名空间
+
+#### 示例
+```ts
+declare var foo: number
+declare function greet(greeting: string): void
+
+declare global {
+  interface String {
+      hump(input: string): string
+  }
+}
+
+
+declare namespace MyPlugin {
+    var n: number
+    var s: string
+    var f: (s:string) => number
+}
+
+//使用
+MyPlugin.s.substr(0,1)
+MyPlugin.n.toFixed()
+MyPlugin.f('文字').toFixed()
+
+```
+
+
+### 导出
+* `export <type> name`  直接导出
+* `export { symbol, symbol }` 间接导出
+* `export { symbol as symbol }` 重命名导出
+* `export default ...` 直接导出默认值
+* `export default symbol` 间接导出默认值
+
+
+#### 示例
+```ts
+export const someVar = 123
+export type someType = {
+    foo: string
+}
+
+const someVar = 123
+type someType = {
+    type: string
+}
+export { someVar, someType }
+export { someVar as aDifferentName }
+
+
+
+export default function foo(): string
+
+declare enum Directions {
+    Up,
+    Down,
+    Left,
+    Right
+}
+export default Directions
+```
+
+### 导入
+* `import { symbol, symbol } from path`   部分导入
+* `import { symbol as symbol } from path` 部分重命名导入
+* `import * as symbol from path` 整体重命名导入
+
+#### 示例
+```ts
+import { someVar, someType } from './foo'
+import { someVar as aDifferentName } from './foo'
+
+//加载到指定对象上， foo.someVar, foo.someType
+import * as foo from './foo'
+```
+
+
+
+## 其他
+
+
+### Promise
+* `pObj = new Promise((reslove, reject) => { ... })`  创建一个Promise对象
+* `pObj = Promise.reslove(result)` 创建一个成功的Promise对象 
+* `pObj = Promise.reject(error)` 创建一个出错的Promise对象 
+* `pObj = pObj.then(result => { ... })`  订阅成功状态
+* `pObj = pObj.catch(error => { ... })`   订阅错误状态
+* `pObj = Promise.all([pObj_1, pObj_2])`  并行运行多个Promise
+
+#### 示例
+```ts
+new Promise((resolve,reject) => {
+        fs.readFile(filename, (err,result) => {
+            if (err) reject(err)
+            else resolve(result)
+        })
+    })
+
+Promise.resolve(123)
+    .then((res)=>{
+         return iReturnPromiseAfter1Second()
+    })
+    .then((res) => {
+        console.log(res)
+    })
+```
+
+### Async/Await
+* async用于标记异步函数
+* await用于暂停执行，直到异步函数返回的Promise对象执行完成
+
+#### 示例
+```ts
+async function foo() {
+    try {
+        const val = await getMeAPromise();
+        console.log(val);
+    }
+    catch(err) {
+        console.log('Error: ', err.message);
+    }
+}
+```
+
+
+
+### 二进制数据
+* ArrayBuffer 存储二进制数据，不能直接读写
+* TypeArray   用于操作ArrayBuffer的一种视图，使用数组方式操作
+  * 包括：Int8Array, Int16Array, Int32Array, Float32Array
+
+#### ArrayBuffer
+* `obj = new ArrayBuffer(len)`  创建一个对象
+* `len = <arrayBuf>.byteLength`  获取大小
+* `<arrayBuf> = <arrayBuf>.slice(begin, [end])`  获取子数据
+
+#### TypeArray
+* `obj = <tArray>.from([val_1, val_2, ...])` 从数组中创建对象
+* `obj = <tArray>.of(val_1, val_2, ...)` 从值中创建对象

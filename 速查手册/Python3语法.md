@@ -440,7 +440,7 @@ Server = Tuple[Address, ConnectionOptions]
 
 ```
 
-### 基本类型
+#### 基本类型
 * `Number, String, Tuple` 不可变，可从typing中导出
 * `List, Dict, Set` 可变，可从typing中导出
 * `int, float, bool, complex` 数字类型
