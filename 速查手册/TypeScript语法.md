@@ -13,6 +13,9 @@
 * TypeScript实现了ECMAScript，并加入了类型系统
 
 
+
+
+
 ## 集合
 
 ### 概述
@@ -220,6 +223,11 @@ class Point3D extends Point {
   }
 }
 ```
+
+
+### 类型判断
+* `<string> = typeof <variable>`  判断变量类型
+* `<bool> = <variable> instanceof <class>` 判断方法或接口类型
 
 ### 枚举
 

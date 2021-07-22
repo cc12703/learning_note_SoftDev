@@ -1,7 +1,7 @@
 
 
 
-# 开发android应用
+# android应用-开发
 
 [TOC]
 
@@ -25,6 +25,10 @@
 
 ### 架构图
 ![](https://gitee.com/cc12703/figurebed/raw/master/img/20201111113003.png)
+
+
+#### 数据结构图
+![](https://gitee.com/cc12703/figurebed/raw/master/img/20210722101121.png)
 
 ### 要点
 * 精简界面控制器的代码（Activity, Fragment）
@@ -69,17 +73,44 @@ MainApplication
 ```
 
 
-## 库
-* Room 数据库ORM库
-* [Retrofit2](https://github.com/square/retrofit) HTTP包装库
-* hilt、dagger 依赖注入库
-* Paging  分页库
-* work-manager 后台作业库
-* Navigation 应用界面导航库
+## 功能库
+
+### 数据库
+* Room   
+
+### 网络访问
+* [Retrofit2](https://github.com/square/retrofit)  HTTP包装库
 * [okdownload](https://github.com/lingochamp/okdownload) 下载库
-* recyclerview，[BRVAH](https://github.com/CymChad/BaseRecyclerViewAdapterHelper)  列表显示库
-* [apache-compress](https://commons.apache.org/proper/commons-compress/) 压缩、解压缩库
+
+### 依赖注入
+* Dagger  
+* [Hilt](https://dagger.dev/hilt/) Dagger包装库
+
+### 权限
 * [permissions-dispatcher](https://github.com/permissions-dispatcher/PermissionsDispatcher)权限动态申请
+
+### 图表
+* [MPAndroidChart](https://github.com/PhilJay/MPAndroidChart)  图表库
+
+### 反射
+* [fest-reflect](https://github.com/alexruiz/fest-reflect)  Java反射库
+
+### 日志输出
+* [slf4j](http://www.slf4j.org/manual.html)  日志接口库
+* [logback-android(https://github.com/tony19/logback-android) logback的适配酷
+
+### 界面
+* Paging  分页库
+* Work-Manager 后台作业库
+* Navigation 应用界面导航库
+* Recyclerview  列表显示库
+* [BRVAH](https://github.com/CymChad/BaseRecyclerViewAdapterHelper) Recyclerview增强库
+
+### 二进制数据
+* [ConvertExt](https://github.com/swallowsonny/ConvertExt) 数据读写库
+
+### 其他
+* [apache-compress](https://commons.apache.org/proper/commons-compress/) 压缩、解压缩库
 
 
 

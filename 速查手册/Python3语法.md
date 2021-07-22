@@ -169,7 +169,8 @@ reduce(lambda x,y: x + y, [0,1,2,3,4], 0)
 
 * `<dict>.clear()`       清除所有条目
 * `val = <dict>.get(key, default)` 获取条目值，不存在则返回默认值
-* `bool = <dict>.has_key(key)`     判断条目是否存在
+* `key in <dict>`                  判断条目是否存在
+* `key not in <dict>`              判断条目是否不存在
 * `<dict>.update(<dict>)`          用其他字典更新条目，如果已存在会覆盖
 
 * `<view> = <dict>.keys()`   返回键视图，包含所有的键
