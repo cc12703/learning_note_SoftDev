@@ -4,19 +4,93 @@
 
 [TOC]
 
-## 说明
-* `<xxx>` 表示类型
-* `[xxx]` 表示可选
+## 基础
 
 * ECMAScript是 JavaScript 的规范
 	* 包括 ES5（ES2009），ES6（ES2015）多个版本
 * TypeScript实现了ECMAScript，并加入了类型系统
 
 
+### 要点
+* 只使用`===`和`!==`来进行比较
+* 只使用`let`和`const`来定义变量
 
+
+### 解构
+* `[var_1, var_2] = [ ... ]`                数组解构
+* `[var_1, var_2, ...var_other] = [ ... ]`  数组解构剩余
+* `[var_1, , ...var_other] = [ ... ]`       数组解构忽略
+
+* `{var_1, var_2} = { ... }`           对象解构
+* `{var_1, var_2, {var_3}} = { ... }`  嵌套对象解构
+
+#### 示例
+```ts
+const [x, y] = [1, 2]
+//output: 1, 2
+const [x, y, ...others] = [1, 2, 3, 4]
+//outputs: 1, 2, [3, 4]
+const [x, , ...others] = [1, 2, 3, 4]
+//outputs: 1, [3, 4]
+
+const {x, y, width, height} = { x: 0, y: 10, width: 15, height: 20}
+const {bar: {bas}} = { bar: { bas: 123} }
+```
+
+
+### 箭头函数
+* `=>` 又称为 胖箭头函数、lambda函数
+* 功能：不需要使用function, 可以捕获this, 可以捕获 arguments
+
+#### 示例
+```ts
+const inc = (x) => x + 1
+
+class Person {
+    constructor(public age:number) {}
+    growOld = () => {
+        this.age++
+    }
+}
+//使用
+const person = new Person(1)
+person.growOld()
+```
+
+
+### 类型注解
+* `num: number`         数字类型
+* `str: string`         字符串类型
+* `isSucc: boolean`     布尔类型
+* `array: boolean[]`    数组类型
+* `nameNumber: [string, number]`   元组类型
+* `map: { [key:number] : string }`  映射类型
+* `name: { first: string, second: string }` 内联方式
+* `function reverse<T>(items: T[]): T[] { ... }`   泛型方式
+* `command: string[] | string`   联合类型
+* `type <name> = <type_1> | <type_2>`   类型别名
+
+#### 示例
+```ts
+type StrOrNum = string | number
+type Text = string | { text: string }
+type Callback = (data: string) => void
+```
+
+
+### 语句
+
+#### `for .. of`
+* 用于遍历可迭代对象(Iterator)，包括：array, set, map, string
+* 数组 `for (const item of <array>) { ... }`
+* 映射 `for (const [key, value] of <map>) { ... }`
+
+#### `for .. in`
+* 用于遍历对象
 
 
 ## 集合
+
 
 ### 概述
 * Array: 有序，可重复，类型需要一样
@@ -52,8 +126,6 @@
 
 * `<str> = <array>.join()` 使用逗号连接元素组成一个字符串
 * `<str> = <array>.join(sep)` 使用分隔符连接元素组成一个字符串
-
-
 
 #### 示例
 ```ts 
@@ -102,7 +174,6 @@ for(const word of words) {
 * `<map>.forEach(val => <oper>)` 遍历元素
 * `<map>.forEach((val, key) => <oper>)` 遍历元素，使用键值对
 
-
 #### 示例
 ```ts
 for (const key of myMap.keys()) {
@@ -116,7 +187,6 @@ for (const[key, value] of myMap.entries()) {
 myMap.forEach((value, key) => {
   console.log(key + ' = ' + value)
 })
-
 ```
 
 
@@ -134,11 +204,8 @@ myMap.forEach((value, key) => {
 * `<set>.forEach((<elm>,<index>) => { ... })` 遍历集合
 
 
-
 ### Tuple
 * `var: [<type_1>, <type_2>] = [val_1, val_2]` 创建元组
-
-
 
 #### 示例
 ```ts
@@ -148,11 +215,19 @@ let x: [string, number] = ['Hello', 10]
 
 
 
-## 类型
+## 数据类型
 
+* 字符串(string)，数字(number)，布尔(boolean)，符号(symbol)
+* 对空(null)，未定义(undefined), 任意值(any)，空值(void)
+* 对象(object)，数组(array)，元组(tuple), 枚举(enum)，函数(function)
+
+### 数字
+* 都是小数，内部使用64位浮点数
 
 ### 字符串 
-* > \<str> = \` xxx ${\<var>} xxxx \` 格式化
+* 使用单引号(')、双引号(")、反引号(`)进行定义
+* `${<var>}` 模板格式化
+* `num = <str>.length` 获取长度
 * `<str> = <str>.toLowerCase()` 小写化
 * `<str> = <str>.toUpperCase()` 大写化
 * `<str> = <str>.trim()`        去除两边的空格
@@ -173,7 +248,6 @@ let x: [string, number] = ['Hello', 10]
 * `<str> = <str>.replace(<regex>, <new_str>)` 使用新字符串替换匹配正则表达式的每个地方
 * `index = <str>.search(<regex>)` 搜索正则表达式，（-1表示找不到）
 
-
 #### 示例
 ```ts
 const str = 'Mozilla Over End'
@@ -186,8 +260,42 @@ str.substring(2)
 
 str.split(' ')
 //output: ['Mozilla', 'Over', 'End']
+
+
+let name: string = "bob"
+`Hello, my name is ${ name }`
+//output: Hello, my name is bob
 ```
 
+### 枚举
+* `enum <name> { <prop> = 0 }` 数字枚举 
+* `enum <name> { <prop> = "<str>" }` 字符串枚举
+* `const enum <name> { <prop> }`  常量枚举
+
+
+#### 示例
+```ts
+enum Direction {
+    Up = 1,
+    Down,
+    Left,
+    Right
+}
+
+enum Direction {
+    Up = "UP",
+    Down = "DOWN",
+    Left = "LEFT",
+    Right = "RIGHT",
+}
+```
+
+### 类型判断
+* `<string> = typeof <variable>`  判断变量类型
+* `<bool> = <variable> instanceof <class>` 判断方法或接口类型
+
+
+## 组织代码
 
 ### 类
 * `class`       定义类
@@ -225,94 +333,26 @@ class Point3D extends Point {
 ```
 
 
-### 类型判断
-* `<string> = typeof <variable>`  判断变量类型
-* `<bool> = <variable> instanceof <class>` 判断方法或接口类型
-
-### 枚举
+### 接口
 
 
 
+### 模块
 
-## 基础
-
-
-### 概述
-* 只使用`===`和`!==`来进行比较
-* 只使用`let`和`const`来定义变量
-
-
-### 解构
-* `[var_1, var_2] = [ ... ]`                数组解构
-* `[var_1, var_2, ...var_other] = [ ... ]`  数组解构剩余
-* `[var_1, , ...var_other] = [ ... ]`       数组解构忽略
-
-* `{var_1, var_2} = { ... }`           对象解构
-* `{var_1, var_2, {var_3}} = { ... }`  嵌套对象解构
-
-#### 示例
-```ts
-const [x, y] = [1, 2]
-//output: 1, 2
-const [x, y, ...others] = [1, 2, 3, 4]
-//outputs: 1, 2, [3, 4]
-const [x, , ...others] = [1, 2, 3, 4]
-//outputs: 1, [3, 4]
+#### 概述
+* 每个文件是一个模块，有一个局部的作用域
+* 使用export进行命名导出，可以有多个
+* 使用export default进行默认导出，只能有一个
+* 模块依赖关系的建立是静态的，发生在代码编译阶段
 
 
-const {x, y, width, height} = { x: 0, y: 10, width: 15, height: 20}
-const {bar: {bas}} = { bar: { bas: 123} }
-```
-
-
-### 箭头函数
-* `=>` 又称为 胖箭头函数、lambda函数
-* 功能：不需要使用function, 可以捕获this, 可以捕获 arguments
-
-#### 示例
-```ts
-const inc = (x) => x + 1
-
-class Person {
-    constructor(public age:number) {}
-    growOld = () => {
-        this.age++
-    }
-}
-//使用
-const person = new Person(1)
-person.growOld()
-```
-
-
-
-### 类型注解
-* `num: number`         数字类型
-* `str: string`         字符串类型
-* `isSucc: boolean`     布尔类型
-* `array: boolean[]`    数组类型
-* `nameNumber: [string, number]`   元组类型
-* `map: { [key:number] : string }`  映射类型
-* `name: { first: string, second: string }` 内联方式
-* `function reverse<T>(items: T[]): T[] { ... }`   泛型方式
-* `command: string[] | string`   联合类型
-* `type <name> = <type_1> | <type_2>`   类型别名
-
-#### 示例
-```ts
-type StrOrNum = string | number
-type Text = string | { text: string }
-type Callback = (data: string) => void
-```
-
-
-### 全局声明
+#### 全局声明
 * `declare var name: <type>`   声明全局变量
 * `declare function name(<param>): <type>`  声明全局函数
 * `declare global { ... }`     扩展已存在的全局变量
 * `declare namespace name { ... }`  声明全局命名空间
 
-#### 示例
+##### 示例
 ```ts
 declare var foo: number
 declare function greet(greeting: string): void
@@ -322,7 +362,6 @@ declare global {
       hump(input: string): string
   }
 }
-
 
 declare namespace MyPlugin {
     var n: number
@@ -338,15 +377,14 @@ MyPlugin.f('文字').toFixed()
 ```
 
 
-### 导出
+#### 导出
 * `export <type> name`  直接导出
 * `export { symbol, symbol }` 间接导出
 * `export { symbol as symbol }` 重命名导出
 * `export default ...` 直接导出默认值
 * `export default symbol` 间接导出默认值
 
-
-#### 示例
+##### 示例
 ```ts
 export const someVar = 123
 export type someType = {
@@ -373,12 +411,13 @@ declare enum Directions {
 export default Directions
 ```
 
-### 导入
+
+#### 导入
 * `import { symbol, symbol } from path`   部分导入
 * `import { symbol as symbol } from path` 部分重命名导入
 * `import * as symbol from path` 整体重命名导入
 
-#### 示例
+##### 示例
 ```ts
 import { someVar, someType } from './foo'
 import { someVar as aDifferentName } from './foo'
@@ -388,11 +427,11 @@ import * as foo from './foo'
 ```
 
 
-
 ## 其他
 
+### 异步
 
-### Promise
+#### Promise
 * `pObj = new Promise((reslove, reject) => { ... })`  创建一个Promise对象
 * `pObj = Promise.reslove(result)` 创建一个成功的Promise对象 
 * `pObj = Promise.reject(error)` 创建一个出错的Promise对象 
@@ -400,7 +439,7 @@ import * as foo from './foo'
 * `pObj = pObj.catch(error => { ... })`   订阅错误状态
 * `pObj = Promise.all([pObj_1, pObj_2])`  并行运行多个Promise
 
-#### 示例
+##### 示例
 ```ts
 new Promise((resolve,reject) => {
         fs.readFile(filename, (err,result) => {
@@ -418,11 +457,11 @@ Promise.resolve(123)
     })
 ```
 
-### Async/Await
+#### Async/Await
 * async用于标记异步函数
 * await用于暂停执行，直到异步函数返回的Promise对象执行完成
 
-#### 示例
+##### 示例
 ```ts
 async function foo() {
     try {
