@@ -28,8 +28,8 @@
 ## 变量
 
 * `var=value` 定义变量
-* `local var=value` 定义局部变量（只能用于函数体内）
-* `readonly var=value` 定义只读变量
+* `local var` 定义成局部变量（只能用于函数体内）
+* `readonly var` 定义成只读变量
 
 * `${var}`  获取变量值
 * `${var-defualt}` 若变量未被声明，则返回default
@@ -37,6 +37,26 @@
 
 * `unset val`  删除变量
 
+
+### 示例
+```sh
+
+myUrl="https://www.google.com"
+readonly myUrl
+echo ${myUrl}
+
+
+result=${a-'local'}
+echo ${result}
+# local
+
+a=""
+result=${a:-'local'}
+echo ${result}
+# local
+
+
+```
 
 ## 数组
 
@@ -72,7 +92,6 @@
 
 ### 示例
 ```sh
-
 string="runoob is a great site"
 ${string:1:4} 
 # 输出 unoo
@@ -110,12 +129,12 @@ val=`expr $b % $a`
 
 
 ### 关系
-* `[ var1 -eq var2]`  是否相等
-* `[ var1 -ne var2]`  是否不相等
-* `[ var1 -gt var2]`  是否大于
-* `[ var1 -lt var2]`  是否小于
-* `[ var1 -ge var2]`  是否大于等于
-* `[ var1 -le var2]`  是否小于等于
+* `[ var1 -eq var2 ]`  是否相等
+* `[ var1 -ne var2 ]`  是否不相等
+* `[ var1 -gt var2 ]`  是否大于
+* `[ var1 -lt var2 ]`  是否小于
+* `[ var1 -ge var2 ]`  是否大于等于
+* `[ var1 -le var2 ]`  是否小于等于
 
 
 ### 逻辑
@@ -155,15 +174,16 @@ val=`expr $b % $a`
 * 标准错误： stderr, 描述符为2
 * 空设备： /dev/null (内容会被丢弃)
 
+
+
 ## 流程控制
+
 
 ### if
 ```sh
-if condition 
-then
+if condition ; then
     command
-elif condition  
-then
+elif condition ; then
     command
 else
     command
@@ -176,19 +196,17 @@ a=10
 * 标准输出： stdout，描述符为1
 * 标准错误： stderr, 描述符为2
 b=20
-if [ $a == $b ]
-then
+if [ $a == $b ]; then
    echo "a 等于 b"
-elif [ $a -gt $b ]
-then
+elif [ $a -gt $b ]; then
    echo "a 大于 b"
-elif [ $a -lt $b ]
-then
+elif [ $a -lt $b ]; then
    echo "a 小于 b"
 else
    echo "没有符合的条件"
 fi
 ```
+
 
 ### case
 ```sh
@@ -228,4 +246,26 @@ while  condition
  do
     command
  done
+```
+
+
+## 函数
+
+* 格式：`<function-name>() { .... }`
+* 返回值：`return <int>`
+* 参数获取：使用`$n`，
+	* `$1` 获取第一个参数值
+	* `${10}` 获取第十个参数值
+* 参数传入：`<function-name> param1 param2 parm3 ...`
+
+### 示例
+```sh
+funcWithParam() {
+	echo "first param $1"
+	echo "second param $2"
+}
+
+funWithParam 1 2
+# first param 1
+# second param 2
 ```

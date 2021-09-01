@@ -46,8 +46,14 @@ find /home ! -name "*.txt"
 * `-r` 新增文件追加到备份文件的尾部
 * `-z` 使用gzip处理文件
 * `-f <name>`  指定输出的备份文件
+* `-C <dir>`   切换到指定目录
 * `--remove-files` 文件加入后就删除
 
+### 示例
+```sh
+
+tar -czf data.tar.gz -C ./data .
+```
 
 ## sudo
 * 功能：以root的身份执行命令
@@ -88,3 +94,54 @@ find /home ! -name "*.txt"
 
 nohup /root/runoob.sh > runoob.log 2>&1 &
 ```
+
+
+## crontab
+* 功能：创建、修改定期执行的程序
+* 格式：`crontab <option>`
+
+### option
+* `-e` 执行文字编辑器来设置日程表
+* `-l` 列出目前的日程表
+* `-r` 删除目前的日程表
+
+
+### 配置
+
+#### 格式
+`min hour day month week command`
+* min 分钟（0 -- 59）
+* hour 小时（0 -- 23）
+* day 天 （1 -- 31）
+* month 月 （1 -- 12）
+* week 星期（0 -- 6），0表示星期天
+
+#### 值
+* `*` 指取值范围内的所有值
+* `/` 指每
+* `-` 指连续范围内的值
+* `,` 值分离的值
+
+#### 示例
+```cron
+5 * * * * ls  #每个小时的第5分钟执行一次ls命令
+*/3 * * * * ls #每隔3分钟执行一次ls命令
+0 6-12/3 * 12 * ls  #在12月中，每天的6点到12点，每隔3个小时的第0分钟执行一次ls命令
+```
+
+### 环境变量
+* 需要添加在`~/.bash_profile`中才会生效
+* 需要在功能脚本中增加`. ~/.bash_profile`
+
+
+### 日志
+
+#### 开启
+1. 命令：`sudo vim /etc/rsyslog.d/50-default.conf`
+1. 去除 `cron.*` 前面的注释
+1. 命令：`sudo service rsyslog restart`
+1. 命令：`sudo apt-get install -y postfix`
+
+#### 查看
+* cron本身的日志：`tail -f /var/log/cron.log`
+* 执行的命令的日志：`cat /var/mail/[username]`
