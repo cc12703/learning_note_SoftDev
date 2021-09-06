@@ -64,7 +64,7 @@ person.growOld()
 * `isSucc: boolean`     布尔类型
 * `array: boolean[]`    数组类型
 * `nameNumber: [string, number]`   元组类型
-* `map: { [key:number] : string }`  映射类型
+* `dict: { [key:number] : string }`  字典类型
 * `name: { first: string, second: string }` 内联方式
 * `function reverse<T>(items: T[]): T[] { ... }`   泛型方式
 * `command: string[] | string`   联合类型
@@ -91,7 +91,6 @@ type Callback = (data: string) => void
 
 ## 集合
 
-
 ### 概述
 * Array: 有序，可重复，类型需要一样
 * Tuple: 有序，可重复，类型可以不一样
@@ -109,6 +108,9 @@ type Callback = (data: string) => void
 * `<elm> = <array>.pop()`  从尾部移除元素，并返回该元素
 * `<index = <array>.indexOf(elm)` 返回给定元素的首个索引，无返回-1
 * `<index = <array>.lastIndexOf(elm)` 返回给定元素的最后一个索引，无返回-1
+
+* `<del-array> = <array>.splice(startIndex, count)` 从给定索引开始删除元素，直接修改原数组
+
 * `<elm> = <array>.find(elm => <cond>)` 查找元素，返回第一个匹配的元素
 * `<index> = <array>.findIndex(elm => <cond>)` 查找元素，返回第一个匹配元素的索引值，无返回-1
 
@@ -130,6 +132,10 @@ type Callback = (data: string) => void
 #### 示例
 ```ts 
 const words = ['spray', 'limit', 'elite', 'exuberant', 'destruction']
+
+words.splice(0, 2)
+//output: ['spray', 'limit']
+//origin: ['elite', 'exuberant', 'destruction']
 
 word.every(word => word.startsWith('s'))
 //output: false

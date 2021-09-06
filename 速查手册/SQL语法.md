@@ -114,6 +114,82 @@ SELECT * FROM Persons WHERE LastName IN ('Adams','Carter')
 ```
 
 
+### GROUP BY子句
+用于结合聚合函数，对数据进行分组
+
+* `SELECT <col> aggregate(<col>) FROM <table> GROUP BY <col>`
+
+#### 示例
+```sql
+SELECT site_id, SUM(access_log.count) AS nums
+		FROM access_log GROUP BY site_id;
+```
+
+### HAVING子句
+用于筛选分组后的数据
+
+* `SELECT <col> aggregate(<col>) FROM <table> GROUP BY <col> HAVING ...`
+
+#### 示例
+```sql
+//查找总访问量大于200的网站
+SELECT name, url, SUM(access_count) AS nums FROM Websites 
+	GROUP BY name HAVING SUM(access_count) > 200;
+```
+
+
+### ORDER BY关键字
+用于对结果集进行排序，按照一列、多列进行排序，默认为升序
+
+* `SELECT ... FROM <table> ORDER BY <col> ASC|DESC, <col>`
+
+#### 示例
+```sql
+SELECT * FROM Websites ORDER BY alexa DESC;
+```
+
+
+### 别名关键字
+用于给表名称、列名称指定其他名字
+
+* `SELECT <col> AS <alias> FROM <table>`
+* `SELECT <col> FROM <table> AS <alias>`
+
+#### 示例
+```sql
+SELECT name AS n, country AS c FROM Websites;
+
+SELECT w.name, w.url, a.count, a.date
+	FROM Websites AS w, access_log AS a
+	WHERE a.site_id=w.id and w.name="菜鸟教程";
+
+```
+
+
+### 聚合函数(Aggregate)
+用于计算从列中获取的值
+
+* `COUNT()` 返回行数
+* `SUM()`   返回总和
+* `MIN()`   返回最小值
+* `MAX()`   返回最大值
+* `AVG()`   返回平均值
+
+
+### EXISTS运算符
+用于判断查询子句是否有记录，有返回True，无返回False
+
+* `SELECT ... FROM <table> WHERE EXISTS(SELECT <col> FROM <table> WHERE ...)`
+
+
+#### 示例
+```sql
+SELECT name, url FROM Websites WHERE EXISTS
+	(SELECT access_count FROM Websites WHERE access_count > 200)
+```
+
+
+
 ### JOIN
 根据多个表中列之间的关系，从表中查询数据
 
@@ -125,6 +201,10 @@ SELECT * FROM Persons WHERE LastName IN ('Adams','Carter')
 	* 从右表(table2)中返回所有行，即使在左表(table1)中没有匹配的行
 * 全连接 `SELECT * FROM <table1> FULL JOIN <table2> on <table1>.<col> = <table2>.<col>`
 	* 从左表(table1)和右表(table2)中返回所有的行
+
+
+
+
 
 ## 数据定义
 
