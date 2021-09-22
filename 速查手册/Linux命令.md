@@ -96,7 +96,7 @@ nohup /root/runoob.sh > runoob.log 2>&1 &
 ```
 
 ## date
-功能：显示、设定系统的日期与时间
+* 功能：显示、设定系统的日期与时间
 
 ### 按格式显示
 * 格式：`date '+format'`
@@ -110,3 +110,8 @@ nohup /root/runoob.sh > runoob.log 2>&1 &
 	* `%I` 小时(01-12)
 	* `%M` 分钟(00-59)
 	* `%S` 秒(00-60)
+
+
+
+## awk
+* 用于处理文本文件

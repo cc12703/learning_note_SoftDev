@@ -185,3 +185,10 @@ LABEL multi.label1="value1" \
 * `docker system prune <option>`  清除悬空的资源
 	* `-a`或`--all` 移除所有无用的资源	
 
+
+
+
+## Docker命令最佳实践
+
+* 删除指定前缀的镜像
+	`docker image list | grep <prefix> | awk '{print $1}' | xargs docker image rm`

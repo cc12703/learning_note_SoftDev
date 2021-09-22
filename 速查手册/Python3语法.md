@@ -95,6 +95,7 @@ reduce(lambda x,y: x + y, [0,1,2,3,4], 0)
 * `<list> = [<el_1>, <el_2>, <el_3>]` 定义列表
 * `<list> = list(<iter>)`   包装成列表
 * `<list> = [expr for iter_val in <iter>]` 列表解析
+* `for index, val in enumerate(<list>)`  带索引的循环
 
 
 #### 示例
@@ -104,6 +105,11 @@ reduce(lambda x,y: x + y, [0,1,2,3,4], 0)
 
 [ i for i in range(8) if i % 2 == 0] 
 >>> [0, 2, 4, 6]
+
+for index, val in enumerate(['one', 'two']) :
+    print(f"{index} : {val}")
+>>> 0 : one
+>>> 1 : two
 ```
 
 

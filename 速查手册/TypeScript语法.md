@@ -13,8 +13,9 @@
 
 ### 要点
 * 只使用`===`和`!==`来进行比较
-* 只使用`let`和`const`来定义变量
-
+* 只使用`let`和`const`来定义变量和常量
+* 变量后使用`!`，表示类型推断排除null, undefined
+* 属性，参数中使用`?`表示该项可选
 
 ### 解构
 * `[var_1, var_2] = [ ... ]`                数组解构
@@ -64,7 +65,7 @@ person.growOld()
 * `isSucc: boolean`     布尔类型
 * `array: boolean[]`    数组类型
 * `nameNumber: [string, number]`   元组类型
-* `dict: { [key:number] : string }`  字典类型
+* `object: { [key:number] : string }`  对象类型
 * `name: { first: string, second: string }` 内联方式
 * `function reverse<T>(items: T[]): T[] { ... }`   泛型方式
 * `command: string[] | string`   联合类型
@@ -169,7 +170,7 @@ for(const word of words) {
 
 * `size = <map>.size` 获取映射大小，键值对的个数
 * `<map> = <map>.set(<ey, val)` 增加、更新元素
-* `val = <map>get(<ey)` 获取元素
+* `val = <map>.get(<key>)` 获取元素
 * `<bool> = <map>.has(key)` 判断元素是否存在
 * `<bool> = <map>.deletee(key)`  删除元素
 * `<map>.clear()` 清除所有元素
@@ -179,6 +180,8 @@ for(const word of words) {
 * `<iter> = <map>.entries()` 返回一个包含键值对的遍历器
 * `<map>.forEach(val => <oper>)` 遍历元素
 * `<map>.forEach((val, key) => <oper>)` 遍历元素，使用键值对
+
+* `Array.from(<map>).map(([key, val] => { ... })` 按列表进行处理
 
 #### 示例
 ```ts
@@ -231,6 +234,7 @@ let x: [string, number] = ['Hello', 10]
 * 都是小数，内部使用64位浮点数
 
 ### 字符串 
+* 内部用Unicode存储
 * 使用单引号(')、双引号(")、反引号(`)进行定义
 * `${<var>}` 模板格式化
 * `num = <str>.length` 获取长度
@@ -277,6 +281,7 @@ let name: string = "bob"
 * `enum <name> { <prop> = 0 }` 数字枚举 
 * `enum <name> { <prop> = "<str>" }` 字符串枚举
 * `const enum <name> { <prop> }`  常量枚举
+* 使用namespace来增加静态方法
 
 
 #### 示例
@@ -294,11 +299,54 @@ enum Direction {
     Left = "LEFT",
     Right = "RIGHT",
 }
+
+namespace Direction {
+
+    function toString() {
+        .....
+    }
+
+}
+```
+
+
+### 狭义对象
+* `<var> = { <field-name>: <field-value>, <field-name>: <field-value>}` 创建对象
+* `<var> = Object.keys(obj)` 获取所有属性
+
+
+### 函数
+* `<var> = function (<arg>, <arg>) { }`  创建函数
+
+
+### 任意值
+* 屏蔽编译器的类型检查
+* 与Object的区别：仍然可以调用对象上的方法
+
+#### 示例
+```ts
+let notSure: any = 4
+notSure.ifItExists()
+notSure.toFixed()
+```
+
+### 空值
+* 表示没有任何类型
+* 用于表示函数没有返回值
+
+#### 示例
+```ts
+function warnUser(): void {
+    alert("This is my warning message")
+}
 ```
 
 ### 类型判断
 * `<string> = typeof <variable>`  判断变量类型
 * `<bool> = <variable> instanceof <class>` 判断方法或接口类型
+
+### 类型转换
+* `let text: string = String(xxx)` 转换成String类型
 
 
 ## 组织代码
@@ -495,3 +543,16 @@ async function foo() {
 #### TypeArray
 * `obj = <tArray>.from([val_1, val_2, ...])` 从数组中创建对象
 * `obj = <tArray>.of(val_1, val_2, ...)` 从值中创建对象
+
+
+### 正则表达式
+* `/pattern/modifiers` 定义表达式
+  * pattern：模式
+  * modifiers：修饰符
+    * i 执行对大小写不敏感的匹配
+    * g 执行全局匹配
+    * m 执行多行匹 
+* `<str>.search(<reg>)` 在字符串中搜索指定的子字符串
+* `<str>.replace(<reg>, <str>)` 搜索指定字符串并替换
+* `/pattern/.test(<str>)` 检测一个字符串是否匹配某个模式
+* `<array> = /pattern/.exec(<str>)` 对字符串执行匹配

@@ -8,7 +8,7 @@
 ## 概述
 
 ### 要点
-* 核心库只关注视图层
+* 核心库只关注视图层，是一个响应式的UI框架
 * 核心是一个允许采用模板语法来声明式地将数据渲染进DOM的系统
 * 使用了基于HTML的模板语法，
 
@@ -33,11 +33,15 @@
 ## 模板
 
 ### 指令
-* 一个带有`v-`前缀的特殊属性，值是单个js表达式
-* 参数在指令名后以`:`开始，一条指令只能接收一个参数
-* 修饰符在参数后以`.`开始，指定绑定方式 
-* `v-bind:href`可以缩写为`:href`
-* `v-on:click`可以缩写为`@:click`
+* 格式：`v-<name>:<parameter>.<qualifier>=<value>`
+* 一个带有`v-`前缀的特殊属性
+* 值是单个js表达式
+* 一条指令只能接收一个参数
+* 修饰符英语指定绑定方式 
+
+#### 缩写
+* `v-bind:href` => `:href`
+* `v-on:click` => `@:click`
 
 #### 示例
 ```html
@@ -63,16 +67,16 @@
 * HTML属性插值 `<div v-bind:id="variable"></div>`
 * 绑定HTML Classs属性 
   * 对象方式：`<div v-bind:class="{ className: variable }"></div>`
-  * 数组方式：`<div v-bind:class="[className1, className2]"></div>`
+  * 数组方式：`<div v-bind:class="[ className1, className2 ]"></div>`
 
 ##### 示例
 ```html
 <div v-bind:class="{ active: isActive }"></div>
-//若isActive为true，则渲染为<div class="active"></div>
+<!-- 若isActive为true，则渲染为<div class="active"></div> -->
 
 <div v-bind:class="[activeClass, errorClass]"></div>
-//若activeClass: 'active'，errorClass: 'text-danger'
-//则渲染为<div class="active text-danger"></div>
+<!-- 若activeClass: 'active'，errorClass: 'text-danger'
+  则渲染为<div class="active text-danger"></div> -->
 ```
 
 
@@ -206,19 +210,11 @@ new Vue({
 
 ## 组件功能
 
-### 计算属性
-* 目的：用于处理复杂逻辑
 
-
-## 组件语法
-
-* [文档-component](https://class-component.vuejs.org/guide/class-component.html)
-* [文档](https://github.com/kaorun343/vue-property-decorator)
-
-### 定义
+### 定义组件
 
 #### 格式
-```
+```ts
 @Component({
   //注册子组件
   components: { xxxComponent, yyyComponent, ... } 
@@ -251,21 +247,85 @@ export default class HelloWorld extends Vue {
 ```
 
 
-### prop属性
+### 计算属性
+* 用于复杂逻辑运算
+* 计算出的值会进行缓存处理
+
+#### 格式
+```ts
+//定义属性对应的获取函数
+get <attrName>() { ... }
+//定义属性对应的设置函数
+set <attrName>(value) { ... }
+```
+
+#### 示例
+```ts
+@Component
+export default class HelloWorld extends Vue {
+  firstName = 'John'
+  lastName = 'Doe'
+
+  // Declared as computed property getter
+  get name() {
+    return this.firstName + ' ' + this.lastName
+  }
+
+  // Declared as computed property setter
+  set name(value) {
+    const splitted = value.split(' ')
+    this.firstName = splitted[0]
+    this.lastName = splitted[1] || ''
+  }
+}
+```
+
+
+### 侦听属性
+* 用于在数据变化时执行异步操作、大开销操作
 
 #### 格式
 ```
-//标注在一个字段上
-@Prop(<type>)  //指定类型
-@Prop([<type>, <type>]) //指定多个类型
-@Prop(
+@Watch(
+  <attrName>,
   {
-    type: <type>      //指定类型
-    required: <bool>  //是否必须的
-    default: xxx      //默认值
-    validator: (value) => <bool>  //校验函数
+    immediate: <bool>, //侦听开始后，是否立刻调用该函数
+    deep: <bool>       //被侦听对象的属性改变时，是否调用该函数
   }
 )
+<methodName>(newValue, oldValue) { ... }
+```
+
+#### 示例
+```ts
+@Component
+export default class YourComponent extends Vue {
+  @Watch('child')
+  onChildChanged(val: string, oldVal: string) {}
+
+  @Watch('person', { immediate: true, deep: true })
+  onPersonChanged1(val: Person, oldVal: Person) {}
+
+  @Watch('person')
+  onPersonChanged2(val: Person, oldVal: Person) {}
+}
+```
+
+
+### 参数属性
+
+#### 格式
+```ts
+@Prop(<type>) <attrName>
+@Prop([<type>, <type>]) <attrName>
+@Prop(
+  {
+    type: <type>,     //指定类型
+    required: <bool>, //是否必须的
+    default: <value>,      //默认值
+    validator: (value) => <bool>  //校验函数
+  }
+) <attrName>
 ```
 
 #### 示例
@@ -278,46 +338,89 @@ export default class YourComponent extends Vue {
 }
 ```
 
-### 计算属性
+### 同步参数属性
+* 类似于参数属性
+* 不同点
+  * 创建一个计算属性
+  * 属性名从装饰符参数中获取
+* 父组件使用时，可以增加`.sync`修饰符
 
 #### 格式
+```ts
+@PropSync(<name>, {
+    type: <type>,     //指定类型
+    required: <bool>, //是否必须的
+    default: <value>,      //默认值
+    validator: (value) => <bool>  //校验函数
+}) <attrName>
 ```
-class XXX {
-  //定义属性的获取函数
-  get <attrName>() { ... } 
 
-  //定义属性的设置函数
-  set <attrName>(value) { ... }
+#### 转换成
+```ts
+@Prop() <name>
+
+get <attrName>() { this.name }
+set <attrName>(value) {
+  this.$emit('update:name', value)
 }
 ```
 
-#### 示例
+#### 例子
 ```ts
 @Component
-export default class HelloWorld extends Vue {
-  firstName = 'John'
-  lastName = 'Doe'
+export default class YourComponent extends Vue {
+  @PropSync('name', { type: String }) syncedName!: string
+}
+```
 
-  get name() {
-    return this.firstName + ' ' + this.lastName
-  }
 
-  set name(value) {
-    const splitted = value.split(' ')
-    this.firstName = splitted[0]
-    this.lastName = splitted[1] || ''
-  }
+### 自定义v-model
+
+#### 格式
+```ts
+@Model(<event>, {
+    type: <type>,     //指定类型
+    required: <bool>, //是否必须的
+    default: <value>,      //默认值
+    validator: (value) => <bool>  //校验函数
+}) <attrName>
+```
+
+#### 转换成
+```js
+export default {
+  model: {
+    prop: 'checked',
+    event: 'change',
+  },
+  props: {
+    checked: {
+      type: Boolean,
+    },
+  },
+}
+```
+
+
+
+
+#### 例子
+```ts
+@Component
+export default class YourComponent extends Vue {
+  @Model('change', { type: Boolean }) readonly checked!: boolean
 }
 ```
 
 
 ### 发送事件
+* 用于组件向外部通知状态变化
+* 使用`v-on`来监听事件
 
 #### 格式
-```
-//标注在一个方法上
+```ts
 @Emit(<eventName>) 
-methodName(eventArg2, eventArg3) {
+<methodName>(eventArg2, eventArg3) {
   return eventArg1
 }
 ```
@@ -344,34 +447,11 @@ export default class YourComponent extends Vue {
 }
 ```
 
-### 侦听属性
 
-#### 格式
-```
-//标注在一个方法上
-@Watch(
-  <attrName>, //属性名
-  {
-    immediate: <bool>, //侦听开始后，是否立刻调用该函数
-    deep: <bool>       //被侦听对象的属性改变时，是否调用该函数
-  }
-)
-```
 
-#### 示例
-```ts
-@Component
-export default class YourComponent extends Vue {
-  @Watch('child')
-  onChildChanged(val: string, oldVal: string) {}
 
-  @Watch('person', { immediate: true, deep: true })
-  onPersonChanged1(val: Person, oldVal: Person) {}
 
-  @Watch('person')
-  onPersonChanged2(val: Person, oldVal: Person) {}
-}
-```
+
 
 
 
