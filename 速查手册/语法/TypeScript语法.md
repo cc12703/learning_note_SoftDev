@@ -102,6 +102,7 @@ type Callback = (data: string) => void
 * `<array> = new Array(<len>)` 定义空数组
 * `<array> = [<el_1>, <el_2>, <el_3>]` 定义数组
 * `<array> = new Array(<el_1>, <el_2>, <el_3>)` 定义数组
+* `<array> = Array.from(<iterable>)` 转成数组
 
 * `<len> = <array>.length`  获取数组长度
 * `<array>.length = 0`      清空数组
@@ -110,6 +111,7 @@ type Callback = (data: string) => void
 * `<index = <array>.indexOf(elm)` 返回给定元素的首个索引，无返回-1
 * `<index = <array>.lastIndexOf(elm)` 返回给定元素的最后一个索引，无返回-1
 
+* `<array> = <array>.concat(<array>, <array>)` 合并数组，返回一个新数组
 * `<del-array> = <array>.splice(startIndex, count)` 从给定索引开始删除元素，直接修改原数组
 
 * `<elm> = <array>.find(elm => <cond>)` 查找元素，返回第一个匹配的元素
@@ -311,9 +313,10 @@ namespace Direction {
 
 
 ### 狭义对象
-* `<var> = { <field-name>: <field-value>, <field-name>: <field-value>}` 创建对象
-* `<var> = Object.keys(obj)` 获取所有属性
-
+* `<obj> = { <field-name>: <field-value>, <field-name>: <field-value>}` 创建对象
+* `<var> = Object.keys(<obj>)` 获取所有属性
+* `<bool> = <obj>.hasOwnProperty(name)` 判断自有属性是否存在
+* `<bool> = name in <obj> ` 判断属性是否存在（自有和继承都算）
 
 ### 函数
 * `<var> = function (<arg>, <arg>) { }`  创建函数
