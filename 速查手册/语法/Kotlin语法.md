@@ -47,7 +47,7 @@ fun View.invisible() {
 	this.visibility = View.INVISIBLE
 }
 
-//单表达式函数，在=符号后定义代码体
+//单表达式函数，使用` = `符号定义代码体
 fun double(x: Int): Int = x * 2
 
 //中缀表达函数
@@ -61,6 +61,30 @@ infix fun Int.shl(x: Int): Int { ... }
 inline fun idouble(s: Int): Int { ... }
 ```
 
+### 标签
+* `<name>@` 定义标签，任何表达式都可以定义
+* `break@<name>` 结束标签指定的循环
+* `continue@<name>`  跳转到标签指定循环的下一次
+* `return@<name>`   从标签指定的位置返回
+
+#### 实例
+```kotlin
+fun foo() {
+    listOf(1, 2, 3, 4, 5).forEach lit@{
+        if (it == 3) return@lit 
+        print(it)
+    }
+    print(" done with explicit label")
+}
+
+fun foo() {
+    listOf(1, 2, 3, 4, 5).forEach {
+        if (it == 3) return@forEach
+        print(it)
+    }
+    print(" done with explicit label")
+}
+```
 
 
 ## 类型
@@ -218,7 +242,7 @@ digraph G {
 * 将列表元素合并加入`Appendable`对象中 `<list>.joinTo(<appendable>, [separator], [prefix], [postfix])`
 
 
-##### 示例
+#### 示例
 ```kotlin
 val list = mutableListOf(1, 2, 3)
 var result = list.map { it * 3 }
@@ -274,8 +298,22 @@ numbers.joinToString(separator = " | ", prefix = "start: ", postfix = ": end")
 
 
 ### Map
-* 
 
+#### 获取值
+* 获取值 `<value> = <map>.get(<key>)`
+* 获取值，或默认值 `<value> = <map>.getOrDefault(<key>, { <def-value> })`
+* 获取值，或加入默认值  `<value> = <map>.getOrPut(<key>, { <def-value> })`
+* 隐式默认值 `<map>.withDefault { <def-value> }` 
+    * 需要使用`getValue`方法才有效
+
+
+#### 示例
+```kotlin
+val config = HashMap<String, Boolean>()
+
+val isEnabled = config.getOrElse("isEnabled", { false })
+
+```
 
 ## 类型系统
 
@@ -411,20 +449,46 @@ class Bird(val weight: Double = 0.00,
 
 ## 协程
 
-### 概述
-* 协程总是运行在一些协程上下文中(CoroutineContext)
-* 上下文包括：协程的Job对象，协程调度器(CoroutineDispatcher)
-* 协程调度器用于确定协程可以运行的线程
+### 概念
+* suspend 修饰一个函数，使其成为挂起函数，可以运行在协程中
+* CoroutineContext 上下文，用于记录协程的运行环境
+	* 包括：Job，CoroutineDispatcher
+* CoroutineDispatcher 调度器，确定协程运行的线程
+* CoroutineScope  作用域，用于管理协程
+* Job 协程本身，用于控制协程
 
-### 基本操作
-* `<Job> = launch { ... }` 启动一个顺序协程
-* `<Job>.join()`           等待协程完成
+
+
+### 操作
+
+#### 启动 - 非协程环境
+* `runBlocking { ... }`   启动协程，阻塞当前线程
+* `GlobalScope.launch { ... }`  启动全局协程
+* `CoroutineScope + launch { ... }`  在作用范围中启动协程
+
+#### 启动 - 协程中
+* `<Job> = launch { ... }`       启动无返回值的协程
+* `<Deferred> = async { ... }`   启动有返回值的协程
+* `<Val> = withContext(<CoroutineContext>) { ... }`  在特定的上下文中启动协程
+
+
+#### 取消
 * `<Job>.cancel()`         取消协程
 * `<Job>.cancelAndJoin()`  取消协程并等待结束
-* `<Deferred> = async { ... }`  启动一个并发协程
+
+
+#### 等待
+* `<Job>.join()`           等待协程完成
 * `<Deferred>.await()`     等待并获取协程结果
-* `delay(<int>)`           挂起一个协程
-* `GlobalScope.launch { ... }` 启动一个全局协程
+
+#### 超时
+* `withTimeout(ms) { ... }`  协程运行超时后会抛出异常
+* `withTimeoutOrNull(ms) { ... }` 协程运行超时后返回null
+
+#### 其他
+* `delay(ms)`     延时操作，会挂起协程
+* `yield()`          放弃运行，会挂起协程
+
 
 
 #### 示例
@@ -442,18 +506,10 @@ fun main() = runBlocking { // this: CoroutineScope
 ```
 
 ### 作用域
-* `runBlocking { ... }`     创建一个作用域，阻塞当前线程
 * `coroutineScope { ... }`  创建一个作用域，其中的协程是并行运行
 
 #### 示例
 ```kotlin
-// 串行执行
-fun main() = runBlocking {
-    doWorld()
-    println("Done")
-}
-
-// 并行执行
 suspend fun doWorld() = coroutineScope { // this: CoroutineScope
     launch {
         delay(2000L)
@@ -468,3 +524,101 @@ suspend fun doWorld() = coroutineScope { // this: CoroutineScope
 ```
 
 ### 异步流(Flow)
+* 作用：使挂起函数可以返回多个异步结果值
+* 流是冷的：直到流中数据被收集时，构建器中的代码才会被执行
+
+#### 操作
+* `flow { ... }` 流构建器
+* `asFlow()`     将集合、序列转换成流
+* `emit(<val>)`  向流发送值
+* `collect`      从流中收集值
+
+
+#### 示例
+```kotlin
+fun simple(): Flow<Int> = flow { // 数据流构建器
+    for (i in 1..3) {
+        delay(100) 
+        emit(i) // 发射值
+    }
+}
+
+fun main() = runBlocking<Unit> {
+
+    // 收取(collect)流中的内容
+    simple().collect { value -> println(value) }
+
+}
+```
+
+
+### 通道(Channel)
+* 作用：在多个协程之间传输数据，类似于BlockingQueue
+
+#### 操作
+* `Channel<T>(<buf-size>)`  创建通道
+* `<channel> = ticker()`    创建定时器通道
+* `send()` 发送数据，会挂起协程
+* `receive()` 接收数据，会挂起协程
+* `close()`  关闭通道
+* `for (<val> in <channel>) { ... }` 遍历通道
+
+
+#### 示例
+```kotlin
+val channel = Channel<Int>()
+launch {
+    for (x in 1..5) channel.send(x * x)
+    channel.close() //关闭通道
+}
+
+//通道被关闭后循环就会结束
+for (y in channel) println(y)
+println("Done!")
+```
+
+
+### Actor
+* 构成：一个协程 + 一个状态值 + 一个通道
+
+
+#### 操作
+* `actor<T>()` 创建一个Actor
+
+
+#### 示例
+```kotlin
+//定义消息
+sealed class CounterMsg
+object IncCounter : CounterMsg() // 单向消息
+class GetCounter(val response: CompletableDeferred<Int>) : CounterMsg() // 带响应的消息
+
+//定义Actor
+fun CoroutineScope.counterActor() = actor<CounterMsg> {
+    var counter = 0 //状态值
+    for (msg in channel) {  
+        when (msg) {
+            is IncCounter -> counter++
+            is GetCounter -> msg.response.complete(counter)
+        }
+    }
+}
+
+//使用
+fun main() = runBlocking<Unit> {
+    val counter = counterActor() // 创建actor
+    withContext(Dispatchers.Default) {
+        massiveRun {
+            counter.send(IncCounter)
+        }
+    }
+
+    //发送一个消息, 从actor得到响应
+    val response = CompletableDeferred<Int>()
+    counter.send(GetCounter(response))
+    println("Counter = ${response.await()}")
+
+    counter.close() // 关闭actor
+}
+
+```
