@@ -8,9 +8,10 @@
 ## 概述
 
 ### 要点
-* 核心库只关注视图层，是一个响应式的UI框架
-* 核心是一个允许采用模板语法来声明式地将数据渲染进DOM的系统
-* 使用了基于HTML的模板语法，
+* 是一个响应式的UI框架
+  * 核心库只关注视图层
+* 使用了基于HTML的模板语法
+  * 将模板编译成虚拟DOM渲染函数
 
 
 
@@ -30,20 +31,70 @@
 * `beforeDestroy` 实例销毁前
 * `destroyed`     实例被销毁后
 
-## 模板
 
-### 指令
+
+
+
+## 模板指令
+
+### 概述
+* 一个带`v-`前缀的特殊属性
+* 作用：当表达式的值改变时会产生连带影响，响应式地作用于DOM
 * 格式：`v-<name>:<parameter>.<qualifier>=<value>`
-* 一个带有`v-`前缀的特殊属性
-* 值是单个js表达式
-* 一条指令只能接收一个参数
-* 修饰符英语指定绑定方式 
+  * `value`：单个js表达式
+  * `parameter`：参数，只能有一个
+  * `qualifier`：修饰符，指定绑定方式
 
-#### 缩写
-* `v-bind:href` => `:href`
-* `v-on:click` => `@:click`
+### 功能
+* `{{ }}`  文本插值：将普通文本插入HTML中
+* `v-bind` 属性插值：将值插入HTML属性中
+  * 缩写：`v-bind:href` => `:href`
+* `v-once` 执行一次性插件
+* `v-if`   有条件地渲染HTML元素
+* `v-show` 有条件地显示HTML元素，元素总是会被渲染
+* `v-for`  通过数组渲染列表
+* `v-on`   监听HTML中的事件
+  * 缩写：`v-on:click` => `@click`
+  * `.stop` 阻止单击事件继续传播
+  * `.prevent` 提交事件不再重载页面
+  * `.capture` 使用事件捕获模式，内部元素触发的事件先处理
+  * `.self`  只当在 event.target 是当前元素自身时触发处理函数
+  * `.once`  点击事件只触发一次
+* `v-model` 在表单元素上创建双向数据绑定
+  * `.lazy`   将同步模式转成change事件，而非input事件
+  * `.number` 自动将用户的输入值转为数值类型
+  * `.trim`   自动过滤用户输入的首尾空白字符 
 
-#### 示例
+### 语法
+* 文本插值 `<span>{{ content }}</span>` 
+* 文本一次插值 `<span v-once>{{ content }}</span>` 
+* 属性插值 `<div v-bind:id="variable"></div>`  
+* 绑定HTML Classs属性 `<div v-bind:class="{ className: variable }"></div>`  
+* 绑定HTML Classs属性 `<div v-bind:class="[ className1, className2 ]"></div>` 
+
+* 条件渲染 `<div v-if="cond">content</div>` 
+* 分组渲染 `<template v-if="ok"> content  </template>`
+* 带分支条件渲染 `<div v-if="cond"> content </div> <div v-else> content </div>`   
+* 带多条件的条件渲染 
+  ```html
+    <div v-if="c-one"> content </div> 
+    <div v-else-if="c-two"> content </div> 
+    <div v-else> content </div>
+  ```
+
+* 条件显示 `<div v-show="cond">content</div>` 
+
+* 列表渲染 `<li v-for="item in items"> content </li>` 
+* 带索引的列表渲染 `<li v-for="(item, index) in items"> content </li>`  
+
+* 事件发生后直接执行js代码 `<button v-on:click="js-code" />`  
+* 将事件绑定到方法 `<button v-on:click="method-name" />`    
+* 事件发生后直接调用方法 `<button v-on:click="method(arg)" />`  
+
+* 将数据绑定到文本 `<input v-model="variable" />`   
+* 将数据绑定到多行文本 `<textarea v-model="variable"/>`   
+
+### 示例
 ```html
 <a v-bind:href="url">...</a>
 <a v-on:click="doSomething">...</a>
@@ -54,92 +105,42 @@
 
 <a v-bind:href="url">...</a>
 <a :href="url">...</a>
-```
-
-### 语法
-
-#### `{{}}` 文本插值
-* 文本插值 `<span>{{ content }}</span>`
-* 文本一次插值 `<span v-once>{{ content }}</span>`
 
 
-#### `v-bind` 属性插值
-* HTML属性插值 `<div v-bind:id="variable"></div>`
-* 绑定HTML Classs属性 
-  * 对象方式：`<div v-bind:class="{ className: variable }"></div>`
-  * 数组方式：`<div v-bind:class="[ className1, className2 ]"></div>`
-
-##### 示例
-```html
 <div v-bind:class="{ active: isActive }"></div>
 <!-- 若isActive为true，则渲染为<div class="active"></div> -->
 
 <div v-bind:class="[activeClass, errorClass]"></div>
 <!-- 若activeClass: 'active'，errorClass: 'text-danger'
   则渲染为<div class="active text-danger"></div> -->
-```
 
 
-#### `v-if` 条件渲染
-* 条件渲染  `<div v-if="cond">content</div>`
-* 带分支条件渲染 
-	```html
-		<div v-if="cond">content</div>
-		<div v-else>content</div>
-	```
-* 带多条件的条件渲染
-	```html
-	<div v-if="cond-one">content-one</div>
-	<div v-else-if="cond-two">content-two</div>
-	<div v-else-if="cond-three">content-three</div>
-	<div v-else>content-other</div>
-	```
+<template v-if="ok"> 
+  <h1>Title</h1>
+  <p>Paragraph 1</p>
+  <p>Paragraph 2</p>
+</template>
 
-##### 特点
-* 真正的条件渲染：切换过程中子组件会被销毁、重建
-* 惰性的：直到条件第一次满足时，才会开始渲染
-* 支持复用元素，使用`key`属性可以独立元素
+<div v-if="cond">content</div>
+<div v-else>content</div>
 
+<div v-if="cond-one">content-one</div>
+<div v-else-if="cond-two">content-two</div>
+<div v-else-if="cond-three">content-three</div>
+<div v-else>content-other</div>
 
-#### `v-show` 条件显示
-* 条件显示 `<div v-show="cond">content</div>`
+<div v-if="cond-one">content-one</div>
+<div v-else-if="cond-two">content-two</div>
+<div v-else-if="cond-three">content-three</div>
+<div v-else>content-other</div>
 
-##### 特点
-* 元素会保留在DOM中，只切换CSS的dispaly属性
-* 不支持复用元素
-
-
-#### `v-for` 列表渲染
-* 列表渲染 `<li v-for="item in items"> content </li>`
-* 带索引的列表渲染  `<li v-for="(item, index) in items"> content </li>`
-
-##### 示例
-```html
 <ul>
   <template v-for="item in items">
     <li>{{ item.msg }}</li>
     <li class="divider" role="presentation"></li>
   </template>
-</ul>ddd
-```
+</ul>
 
-#### `v-on` 监听事件
-* 直接执行js代码  `<button v-on:click="js-code"></button>`
-* 绑定到方法 `<button v-on:click="method-name"></button>`
-* 直接调用方法 `<button v-on:click="method(arg)"></button>`
-
-##### 特点
-* 用于监听DOM事件
-
-##### 修饰符
-* `.stop` 阻止单击事件继续传播
-* `.prevent` 提交事件不再重载页面
-* `.capture` 使用事件捕获模式，内部元素触发的事件先处理
-* `.self`  只当在 event.target 是当前元素自身时触发处理函数
-* `.once`  点击事件只触发一次
-
-##### 示例
-```html
 <div id="example-1">
 	<button v-on:click="counter += 1">Add 1</button>
 	<p>The button above has been clicked {{ counter }} times.</p>
@@ -181,23 +182,7 @@ new Vue({
   }
 })
 </script>
-```
 
-#### `v-model` 数据绑定
-* 绑定到文本 `<input v-model="variable" />`
-* 绑定到多行文本 `<textarea v-model="variable"/>`
-
-##### 特点
-* 在表单及元素上创建双向数据绑定
-* 根据控件类型自动选取正确的方法来更新元素
-
-##### 修饰符
-* `.lazy`   将同步模式转成change事件，而非input事件
-* `.number` 自动将用户的输入值转为数值类型
-* `.trim`   自动过滤用户输入的首尾空白字符
-
-##### 示例
-```html
 <input v-model="message" placeholder="edit me">
 <p>Message is: {{ message }}</p>
 
@@ -208,17 +193,41 @@ new Vue({
 ```
 
 
-## 组件功能
+
+## 组件
+
+### 概述
+* 是一个带有名字的可复用的Vue实例
+* 组件可以进行任意次数的复用
 
 
-### 定义组件
 
-#### 格式
+### 功能
+* 定义组件 `{ /* options */}`
+  * data选项必须是一个函数
+* 注册组件：使组件能在模板中使用
+  * 方式：全局注册、局部注册
+* 使用`prop`注册自定义属性，向子组件传递数据
+  * `type` 数据类型
+  * `required` 必须属性
+  * `default` 默认值
+  * `validator`  验证函数
+* 使用`$emit()`发送一个事件
+
+### 语法
+
+#### 定义组件
+```js
+{
+  data: function() {
+    return { ... }
+  },
+  template: '...'
+}
+```
+
 ```ts
-@Component({
-  //注册子组件
-  components: { xxxComponent, yyyComponent, ... } 
-})
+@Component({ })
 class Component extends Vue {
 
   //定义组件数据
@@ -229,22 +238,67 @@ class Component extends Vue {
 }
 ```
 
-#### 示例
-```ts
-@Component({
-  components: {  //注册其他组件
-    OtherComponent
+#### 注册组件
+```js
+//全局注册
+Vue.component(name, { 
+   // 选项 
+})
+
+//局部注册
+var CompA = { 
+  // 选项 
+}
+
+new Vue({ 
+  components: { 
+    'comp-a': CompA 
   }
+})
+```
+```ts
+//局部注册
+@Component({
+  //注册其他组件
+  components: {  OtherComponent }
  })
 export default class HelloWorld extends Vue {
-  //定义一个组件数据，带有响应属性
-  message = 'Hello World!'
-
-  hello() {
-    console.log('Hello World!')
-  }
+    ...
 }
 ```
+
+#### 自定义属性
+```js
+{
+  props: ['title', 'likes']
+
+  props: {
+    title: String,
+    likes: Number,
+  }
+
+  propE: {
+    type: Object,
+    default: function () {
+      return { message: 'hello' }
+    }
+  },
+}
+```
+
+```ts
+@Prop(<type>) <attrName>
+@Prop([<type>, <type>]) <attrName>
+@Prop(
+  {
+    type: <type>,     //指定类型
+    required: <bool>, //是否必须的
+    default: <value>,      //默认值
+    validator: (value) => <bool>  //校验函数
+  }
+) <attrName>
+```
+
 
 
 ### 计算属性

@@ -221,6 +221,7 @@ digraph G {
 * 随机排序 `<list>.shuffle()`
 * 自定义排序 `<list>.sortBy { elm -> <oper> }`
 
+
 #### 分组、分块
 * 将列表分块 `<nest-list> = <list>.chunked(size)`
 * 将列表分块并转换 `<list> = <list>.chunked(size) { elm -> <oper> }`
@@ -241,6 +242,9 @@ digraph G {
 * 将列表元素合并成一个字符串 `<str> = <list>.joinToString([separator], [prefix], [postfix])`
 * 将列表元素合并加入`Appendable`对象中 `<list>.joinTo(<appendable>, [separator], [prefix], [postfix])`
 
+#### 其他
+* 将元素求和  `<list>.sumBy{ elm.<field> }`
+* 惰性求值 `<list>.asSequence().xxx.toList()`
 
 #### 示例
 ```kotlin
@@ -252,6 +256,11 @@ result = list.mapNotNull { if ( it == 2) null else it * 3 }
 result = list.mapIndexedNotNull { idx, value -> 
 				if (idx == 0) null else value * idx 
 			}
+
+list.asSequence()
+	.filter {it > 2}.map {it * 2}
+	.toList()
+//[6]
 
 
 val numbers = (0..13).toList()
@@ -299,6 +308,12 @@ numbers.joinToString(separator = " | ", prefix = "start: ", postfix = ": end")
 
 ### Map
 
+
+#### 创建
+* 创建不可变空map `<map> = mapOf<KeyType, ValType>()`
+* 用二元组创建不可变map `<map> = mapOf(<pair>)`
+* 创建可变空map `<map> = mutableMapOf<KeyType, ValType>()`
+
 #### 获取值
 * 获取值 `<value> = <map>.get(<key>)`
 * 获取值，或默认值 `<value> = <map>.getOrDefault(<key>, { <def-value> })`
@@ -316,6 +331,38 @@ val isEnabled = config.getOrElse("isEnabled", { false })
 ```
 
 ## 类型系统
+
+### 可空
+* 定义可空类型 `<type>?`
+    * Int? = Int or null
+* 安全调用 `?.`
+    * 当非空时才会进行调用
+* 断言调用 `!!.`
+    * 当空时会抛出异常
+* Elvis操作符 `?: <default>`
+    * 当空时返回默认值
+
+#### 示例
+```kotlin
+na?.length  //返回null
+na!!.length // 返回KotlinNullPointerException
+
+y = x?:0  //等价于下面语句
+val y = if(x !== null) x else 0  
+```
+
+### 转换
+* 使用`is`后，编译器会自动进行类型转换
+* `as`操作符，当对象为空则抛出异常
+* `as?`操作符，当对象为空则返回null
+
+#### 示例
+```kotlin
+val stu: Any = Student(Glasses(189))
+if(stu is Student) println(stu.glasses)
+
+var stu: Student? = getStu() as Student?
+```
 
 
 ## 面向对象
@@ -436,6 +483,9 @@ var stringRepresentation: String
     }
 ```
 * 延时初始化 `by lazy`
+    * 只能用于val变量
+    * 首次调用时，才会进行赋值操作
+    * 系统会加上同步锁，是线程安全的
 ```kotlin
 class Bird(val weight: Double = 0.00,
 		   val age: Int = 0, val color: String = "blue") { 
@@ -444,8 +494,108 @@ class Bird(val weight: Double = 0.00,
 	}
 }
 ```
+* 延时初始化 `lateinit`
+    * 只能用于var变量
+    * 不能用于基本数据类型
+```kotlin
+class Bird(val weight: Double = 0.00,
+		   val age: Int = 0, val color: String = "blue") { 
+    lateinit var sex: String
+
+    fun printSex() { 
+		this.sex = if (this.color == "yellow") "male" else "female"
+		println(this.sex)
+	}
+}
+```
 
 
+### 伴生对象
+* 伴随某个类的对象，属于该类
+* 全局只有一个实例
+* 在类被装载时会被初始化
+```kotlin
+class Prize(...) {
+	companion object {
+		fun isRedpack(prize: Prize): Boolean {}
+	}
+}
+
+//实现工厂模式
+class Prize private constructor(...) {
+	companion object {
+		fun newRedpackPrize(...) = Prize(...)
+	}
+}
+```
+
+
+### 创建单例类
+* 使用object实现
+* 可以实现接口，可以继承类
+```kotlin
+object DatabaseConfig {
+	var host: String = "localhost"
+	var port: Int = 5000
+}
+```
+
+### 生成匿名内部类
+```kotlin
+val comparator = object : Comparator<String> { 
+	override fun compare(s1: String?, s2: String?): Int { ... }
+}
+```
+
+
+## 扩展
+
+### 内置函数
+* `with`
+    ```kotlin
+    with(bean) {
+        //直接调用bean的方法、属性
+        //返回值为最后一行
+		titleTV.text = title 
+	}
+    ```
+* `let`
+    ```kotlin
+    bean.let {
+        //it表示bean
+        //返回值为最后一行
+        it.title   
+    }
+    bean?.let {  //统一进行判空处理
+        it.function()  
+    }
+    ```
+* `also`
+    ```kotlin
+    bean.also {
+        //it表示bean
+        //返回值为bean对象
+        it.title 
+    }
+    ```
+* `run` 
+    ```kotlin
+    bean.run {
+        //直接调用bean的方法、属性
+        //返回值为最后一行
+        titleTV.text = title 
+    }
+    bean?.run { ... }
+    ```
+* `apply` 
+    ```kotlin
+    bean.apply { 
+        //直接调用bean的方法、属性
+        //返回值为bean对象
+        titleTV.text = title 
+    }
+    bean?.apply { ... }
+    ```
 
 ## 协程
 
