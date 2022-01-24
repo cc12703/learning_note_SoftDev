@@ -327,8 +327,28 @@ numbers.joinToString(separator = " | ", prefix = "start: ", postfix = ": end")
 val config = HashMap<String, Boolean>()
 
 val isEnabled = config.getOrElse("isEnabled", { false })
+```
+
+
+### Range
+
+#### 创建
+* 创建闭区间 `<int>..<int>` 或 `<int>.rangeTo(<int>)`
+* 创建半闭区间 `<int> until <int>`
+* 创建递减区间 `<int>.downTo(<int>)`
+
+#### 其他
+* 定义间隔 `<range>.step(<int>)`
+
+#### 示例
+```kotlin
+1..1024  // [1,1024]
+1 until 1024 // [1,1024)
+
+1..10.step(2) // 1, 3, 5, 7, 9
 
 ```
+
 
 ## 类型系统
 

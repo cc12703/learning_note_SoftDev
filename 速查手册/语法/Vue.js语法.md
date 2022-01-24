@@ -64,6 +64,8 @@
   * `.lazy`   将同步模式转成change事件，而非input事件
   * `.number` 自动将用户的输入值转为数值类型
   * `.trim`   自动过滤用户输入的首尾空白字符 
+  * 语法糖：绑定`value`属性，监听`input`事件
+
 
 ### 语法
 * 文本插值 `<span>{{ content }}</span>` 
@@ -190,6 +192,16 @@ new Vue({
 <p style="white-space: pre-line;">{{ message }}</p>
 
 <textarea v-model="message" placeholder="add multiple lines"></textarea>
+
+
+
+<input  v-model="searchText">
+
+<!-- 等价于 -->
+<input 
+  v-bind:value="searchText"
+  v-on:input="searchText = $event.target.value">
+
 ```
 
 
@@ -207,25 +219,46 @@ new Vue({
   * data选项必须是一个函数
 * 注册组件：使组件能在模板中使用
   * 方式：全局注册、局部注册
-* 使用`prop`注册自定义属性，向子组件传递数据
+* 使用`prop`注册参数属性，向子组件传递数据  [语法](#参数属性)
   * `type` 数据类型
   * `required` 必须属性
   * `default` 默认值
   * `validator`  验证函数
-* 使用`$emit()`发送一个事件
+* 父组件使用`.sync`对自定义属性进行**双向绑定**
+* 使用`$emit()`子组件发送一个事件  [语法](#自定义事件)
+  * 原型：`$emit(event-name, ...arg)`
+  * 事件名推荐使用**kebab-case**
+  * 父组件使用`v-on`接收一个事件
+* 使用**计算属性**处理复杂逻辑  [语法](#计算属性)
+  * 值会基于它们的响应式依赖进行缓存的
+  * 在需要可以创建一个**setter**函数
+* 使用**侦听器**来响应数据的变化 [语法](#侦听属性)
+  * 目的：在数据变化时执行异步操作、大开销操作
+* 组件可以自定义v-model操作符 [语法](#自定义v-model)
+
+
 
 ### 语法
 
 #### 定义组件
+
+##### js方式
 ```js
 {
   data: function() {
     return { ... }
   },
+  computed: { ... },
+
+  watch: { ... },
+
+  model: { ... },
+
   template: '...'
 }
 ```
 
+##### ts方式
 ```ts
 @Component({ })
 class Component extends Vue {
@@ -267,122 +300,66 @@ export default class HelloWorld extends Vue {
 }
 ```
 
-#### 自定义属性
+
+#### 参数属性
 ```js
 {
-  props: ['title', 'likes']
+  props: [<name>, <name>]
 
   props: {
-    title: String,
-    likes: Number,
+    <name>: <type>,
+    <name>: <type>,
   }
 
-  propE: {
-    type: Object,
-    default: function () {
-      return { message: 'hello' }
+  prop: {
+    type: <type>,
+    default: xxx,
+}
+```
+
+```ts
+@Prop(<type>) <attrName>
+@Prop([<type>, <type>]) <attrName>
+@Prop(
+  {
+    type: <type>,      
+    required: <bool>, 
+    default: <value>,       
+    validator: (value) => <bool> 
+  }
+) <attrName>
+```
+
+##### 示例
+```js
+Vue.component('my-component', {
+  props: {
+    propA: Number,
+    propB: [String, Number], // 多个可能的类型
+    propC: {
+      type: String,
+      required: true  // 必填的字符串
+    },
+    propD: {
+      type: Number,
+      default: 100  // 带有默认值的数字
+    },
+    propE: {
+      type: Object,
+      default: function () {
+        return { message: 'hello' }
+      }
+    },
+    propF: {
+      validator: function (value) {  // 自定义验证函数
+        return ['success', 'warning', 'danger'].indexOf(value) !== -1
+      }
     }
-  },
-}
-```
-
-```ts
-@Prop(<type>) <attrName>
-@Prop([<type>, <type>]) <attrName>
-@Prop(
-  {
-    type: <type>,     //指定类型
-    required: <bool>, //是否必须的
-    default: <value>,      //默认值
-    validator: (value) => <bool>  //校验函数
   }
-) <attrName>
+})
+
 ```
 
-
-
-### 计算属性
-* 用于复杂逻辑运算
-* 计算出的值会进行缓存处理
-
-#### 格式
-```ts
-//定义属性对应的获取函数
-get <attrName>() { ... }
-//定义属性对应的设置函数
-set <attrName>(value) { ... }
-```
-
-#### 示例
-```ts
-@Component
-export default class HelloWorld extends Vue {
-  firstName = 'John'
-  lastName = 'Doe'
-
-  // Declared as computed property getter
-  get name() {
-    return this.firstName + ' ' + this.lastName
-  }
-
-  // Declared as computed property setter
-  set name(value) {
-    const splitted = value.split(' ')
-    this.firstName = splitted[0]
-    this.lastName = splitted[1] || ''
-  }
-}
-```
-
-
-### 侦听属性
-* 用于在数据变化时执行异步操作、大开销操作
-
-#### 格式
-```
-@Watch(
-  <attrName>,
-  {
-    immediate: <bool>, //侦听开始后，是否立刻调用该函数
-    deep: <bool>       //被侦听对象的属性改变时，是否调用该函数
-  }
-)
-<methodName>(newValue, oldValue) { ... }
-```
-
-#### 示例
-```ts
-@Component
-export default class YourComponent extends Vue {
-  @Watch('child')
-  onChildChanged(val: string, oldVal: string) {}
-
-  @Watch('person', { immediate: true, deep: true })
-  onPersonChanged1(val: Person, oldVal: Person) {}
-
-  @Watch('person')
-  onPersonChanged2(val: Person, oldVal: Person) {}
-}
-```
-
-
-### 参数属性
-
-#### 格式
-```ts
-@Prop(<type>) <attrName>
-@Prop([<type>, <type>]) <attrName>
-@Prop(
-  {
-    type: <type>,     //指定类型
-    required: <bool>, //是否必须的
-    default: <value>,      //默认值
-    validator: (value) => <bool>  //校验函数
-  }
-) <attrName>
-```
-
-#### 示例
 ```ts
 @Component
 export default class YourComponent extends Vue {
@@ -392,14 +369,26 @@ export default class YourComponent extends Vue {
 }
 ```
 
-### 同步参数属性
-* 类似于参数属性
-* 不同点
-  * 创建一个计算属性
-  * 属性名从装饰符参数中获取
-* 父组件使用时，可以增加`.sync`修饰符
 
-#### 格式
+#### 双向绑定参数属性
+```html
+<text-document v-bind:<name>.sync="<attr-name>"></text-document>
+
+<!-- 转换为 -->
+<text-document
+  v-bind:<name>="<attr-name>"
+  v-on:update:<name>="<attr-name> = $event">
+</text-document>
+
+```
+
+```js 
+{
+  this.$emit('update:<name>', newTitle)
+}
+
+```
+
 ```ts
 @PropSync(<name>, {
     type: <type>,     //指定类型
@@ -407,19 +396,18 @@ export default class YourComponent extends Vue {
     default: <value>,      //默认值
     validator: (value) => <bool>  //校验函数
 }) <attrName>
-```
 
-#### 转换成
-```ts
-@Prop() <name>
 
-get <attrName>() { this.name }
+//转换成
+@Prop() <name>    //一个参数属性
+
+get <attrName>() { this.name }   //一个计算属性
 set <attrName>(value) {
   this.$emit('update:name', value)
 }
 ```
 
-#### 例子
+##### 例子
 ```ts
 @Component
 export default class YourComponent extends Vue {
@@ -428,50 +416,15 @@ export default class YourComponent extends Vue {
 ```
 
 
-### 自定义v-model
-
-#### 格式
-```ts
-@Model(<event>, {
-    type: <type>,     //指定类型
-    required: <bool>, //是否必须的
-    default: <value>,      //默认值
-    validator: (value) => <bool>  //校验函数
-}) <attrName>
-```
-
-#### 转换成
+#### 自定义事件
 ```js
-export default {
-  model: {
-    prop: 'checked',
-    event: 'change',
-  },
-  props: {
-    checked: {
-      type: Boolean,
-    },
-  },
-}
+//发送
+"$emit(<event-name>)"
+
+//接收
+v-on:<event-name>=" ... "
 ```
 
-
-
-
-#### 例子
-```ts
-@Component
-export default class YourComponent extends Vue {
-  @Model('change', { type: Boolean }) readonly checked!: boolean
-}
-```
-
-
-### 发送事件
-* 用于组件向外部通知状态变化
-* 使用`v-on`来监听事件
-
-#### 格式
 ```ts
 @Emit(<eventName>) 
 <methodName>(eventArg2, eventArg3) {
@@ -479,9 +432,31 @@ export default class YourComponent extends Vue {
 }
 ```
 
-#### 示例
+##### 示例
+```js
+//子组件
+Vue.component('blog-post', {
+  props: ['post'],
+  template: `
+    <div class="blog-post">
+      <h3>{{ post.title }}</h3>
+      <button v-on:click="$emit('enlarge-text')>
+        Enlarge text
+      </button>
+      <div v-html="post.content"></div>
+    </div>
+  `
+})
+
+//父组件模板
+<blog-post
+  ...
+  v-on:enlarge-text="postFontSize += 0.1">
+</blog-post>
+```
+
 ```ts
-@Component
+@Component({})
 export default class YourComponent extends Vue {
 
   //事件名: add-to-count
@@ -497,14 +472,194 @@ export default class YourComponent extends Vue {
   //事件参数：10
   @Emit()
   returnValue() { return 10 }
-  
+}
+```
+
+#### 计算属性
+```js
+Vue.component('<name>', {
+
+  computed: {
+    <attr-name>: function() { ... }
+
+    <attr-name>: {
+      get: function() { ... }
+      set: function(val) { ... }
+    }
+  }
+
+})
+```
+```ts
+export default class Component extends Vue {
+
+  //定义属性对应的获取函数
+  get <attrName>() { ... }
+  //定义属性对应的设置函数
+  set <attrName>(value) { ... }
+
+}
+```
+
+##### 示例
+```ts
+@Component
+export default class HelloWorld extends Vue {
+  firstName = 'John'
+  lastName = 'Doe'
+
+  get name() {
+    return this.firstName + ' ' + this.lastName
+  }
+
+  set name(value) {
+    const splitted = value.split(' ')
+    this.firstName = splitted[0]
+    this.lastName = splitted[1] || ''
+  }
+}
+```
+
+
+#### 侦听属性
+```js
+Vue.component('<name>', {
+
+  data: function() {
+    return { 
+      <attr-name>: ...
+     }
+  },
+
+  watch: {
+    <attr-name>: function(newVal, oldVal) { 
+      ... 
+    }
+  }
+
+})
+```
+
+```ts
+@Watch(
+  <attrName>,
+  {
+    immediate: <bool>, //侦听开始后，是否立刻调用该函数
+    deep: <bool>       //被侦听对象的属性改变时，是否调用该函数
+  }
+)
+<methodName>(newValue, oldValue) { ... }
+```
+
+##### 示例
+```ts
+@Component
+export default class YourComponent extends Vue {
+  @Watch('child')
+  onChildChanged(val: string, oldVal: string) {}
+
+  @Watch('person', { immediate: true, deep: true })
+  onPersonChanged1(val: Person, oldVal: Person) {}
+
+  @Watch('person')
+  onPersonChanged2(val: Person, oldVal: Person) {}
+}
+```
+
+
+#### 自定义v-model
+```js
+export default {
+  model: {
+    prop: '<propName>',
+    event: 'change',
+  },
+
+  props: {
+    <propName>: {
+      type: Boolean,
+    },
+  },
+}
+```
+
+```ts
+@Model(<event>, {
+    type: <type>,     //指定类型
+    required: <bool>, //是否必须的
+    default: <value>,      //默认值
+    validator: (value) => <bool>  //校验函数
+}) <propName>
+```
+
+```ts
+@ModelSync(<propName>, <event>, { ... }) <attrName>
+
+
+//转换成
+@Model(<event>, { ... }) <propName>    //一个v-model
+
+get <attrName>() { this.<propName> }   //一个计算属性
+set <attrName>(value) {
+  this.$emit('<event>', value)
+}
+```
+
+##### 例子
+```ts
+@Component
+export default class YourComponent extends Vue {
+  @Model('change', { type: Boolean }) readonly checked!: boolean
+
+  @ModelSync('checked', 'change', { type: Boolean })
+  readonly checkedValue!: boolean
 }
 ```
 
 
 
+## 其他
 
+### 过滤器
 
+#### 功能
+* 用于文本格式化
+
+#### 用法
+* 文本插值 `{{ message | capitalize }}`
+* v-bind表达式 `<div v-bind:id="rawId | formatId"></div>`
+
+#### 语法
+
+##### js组件方式
+```js
+{
+  filters: {
+    <name>: function(value) {
+      return ...
+    }
+  }
+}
+```
+
+##### ts组件方式
+```ts
+@Component({
+  filters: {
+    <name>(value: any) {
+      return ...
+    }
+  }
+})
+export default class ComponentName extends Vue { }
+```
+
+##### 全局方式
+```js
+Vue.filter('<name>', function (value) {
+  return ...
+})
+```
 
 
 

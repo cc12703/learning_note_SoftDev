@@ -122,6 +122,13 @@ body {
 }
 ```
 
+### 其他
+
+#### `!important`
+* 作用：用于增加样式的权重，使该声明覆盖其他任何声明
+* **要尽量避免使用该规则**
+* 可以用来给网站设定一个全站样式的CSS
+
 
 
 
@@ -372,4 +379,51 @@ body
 }
 ```
 ![](https://gitee.com/cc12703/figurebed/raw/master/img/20210907151902.png)
+
+
+
+## 媒体查询
+
+### 语法
+```
+@media 媒体类型 and|not|only (媒体特征) {
+    CSS代码;
+}
+```
+
+#### 关键字
+* and 用于包含特定的媒体类型
+* not 用于排除特定的媒体类型
+
+#### 媒体类型
+* all  所有设备
+* screen 电脑屏幕
+* print 打印机、打印预览
+
+#### 媒体特征
+* width 浏览器页面的可视宽度
+  * min-width 页面最小的可视宽度
+  * max-width 页面最大的可视宽度
+* height 浏览器页面的可视高度
+  * min-height 页面最小的可视高度
+  * max-height 页面最大的可视高度
+* device-width 设备屏幕的可见宽度
+* device-height 设备屏幕的可见高度
+* aspect-ratio 页面可见区域的宽/高比率
+* device-aspect-ratio 设备屏幕的宽/高比率
+* orientation 设备屏幕的方向
+
+### meta标签
+
+#### 示例
+```html
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+```
+
+#### 参数
+* width=device-width 可视宽度等于设备宽度
+* initial-scale 初始的缩放比例
+* minimum-scale 允许用户缩放到的最小比例
+* maximum-scale 允许用户缩放到的最大比例
+* user-scalable 用户是否可以手动缩放
 
