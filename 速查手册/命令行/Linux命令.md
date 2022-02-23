@@ -112,6 +112,24 @@ nohup /root/runoob.sh > runoob.log 2>&1 &
 	* `%S` 秒(00-60)
 
 
+## grep
+* 功能：使用正则表达式搜索文本，将匹配行打印出来
+* 格式：`grep <option> pattern`
+
+### option
+* `-i` 忽略大小写
+* `-E` 使用扩展的正则表达式
+* `-A <num>` 显示匹配后的N行
+* `-B <num>` 显示匹配前的N行
+* `-C <num>` 显示匹配前后的N行
+
+### 示例
+```sh
+
+grep -E "TestOne|TestTwo" test.txt  #匹配多个字符串
+
+```
+
 
 ## awk
 * 用于处理文本文件

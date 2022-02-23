@@ -194,9 +194,14 @@ for index, val in enumerate(['one', 'two']) :
 
 * `<type> = type(<el>)` 获取类型
 * `<type> = <el>.class` 获取类型
-* `<bool> = isintance(<el>, <type>`          判断是否是某类型实例
+* `<bool> = isinstance(<el>, <type>)`          判断是否是某类型实例，处理继承关系
 * `<bool> = issubclass(type(<el>), <type>)`  判断是否是某类型实例
 
+#### 示例
+```python 
+isinstance(2, int)
+isinstance(2, (str, int, list))
+```
 
 
 ### 格式化
@@ -429,6 +434,7 @@ Color.RED.value
 * `arg_name: <type>`         参数标注
 * `def (...) -> <type>`      返回值标注
 * `<type> = <struct_type>[<type>]`  定义类型别名
+* `Callable[[<argType>, ...], <return-type>]`  回调标注
 
 
 #### 示例
@@ -457,6 +463,9 @@ Server = Tuple[Address, ConnectionOptions]
 ### 其他
 * `X if C else Y` 三元操作符
 * `with context_expr [as var]` 用于简化资源的分配和释放
+* `if C is not None`  是否不是空值
+* `if C is None`  是否是空值
+
 
 
 #### 示例
