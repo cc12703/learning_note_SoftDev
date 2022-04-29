@@ -236,6 +236,12 @@ f"hello {name}, You are {arg}
 
 
 
+### 整数
+* `<int> = int(<int>)`  向下取整, 3.7 -> 3
+* `<int> = math.ceil(<int>)`  向上取整，3.2 -> 4
+* `<int> = round(<int>)`  四舍五入
+* `(<int> , <int>) = math.modf(<int>)`  获取整数部分和小数部分
+
 
 ## 语法
 
