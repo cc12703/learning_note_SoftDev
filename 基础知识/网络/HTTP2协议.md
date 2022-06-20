@@ -29,7 +29,7 @@
 	* 承载着特定类型的数据
 
 ### 图示
-![](https://gitee.com/cc12703/figurebed/raw/master/img/20211026171148.png)
+![](http://picbed.cc12703.com/20211026171148.png)
 
 
 

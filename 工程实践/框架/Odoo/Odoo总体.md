@@ -37,7 +37,7 @@
 * webService：提供网络调用接口（格式：xml-rpc, json-rpc）
 
 #### 图示
-![](https://gitee.com/cc12703/figurebed/raw/master/img/20210104145638.png)
+![](http://picbed.cc12703.com/20210104145638.png)
 
 
 ### 应用架构

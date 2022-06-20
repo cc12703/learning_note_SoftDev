@@ -238,7 +238,7 @@ body
 #### 盒模型
 
 ##### 图示
-![](https://gitee.com/cc12703/figurebed/raw/master/img/20201109101036.png)
+![](http://picbed.cc12703.com/20201109101036.png)
 
 ##### 说明
 * Margin（外边距）   清除边框区域。没有背景颜色，它是完全透明
@@ -269,7 +269,7 @@ body
 ```
 
 #### 图示
-![](https://gitee.com/cc12703/figurebed/raw/master/img/20201109101158.png)
+![](http://picbed.cc12703.com/20201109101158.png)
 
 
 
@@ -303,7 +303,7 @@ body
   flex-direction: row | row-reverse | column | column-reverse;
 }
 ```
-![](https://gitee.com/cc12703/figurebed/raw/master/img/20201109101300.png)
+![](http://picbed.cc12703.com/20201109101300.png)
 
 
 ```css
@@ -311,7 +311,7 @@ body
   justify-content: flex-start | flex-end | center | space-between | space-around;
 }
 ```
-![](https://gitee.com/cc12703/figurebed/raw/master/img/20201109101420.png)
+![](http://picbed.cc12703.com/20201109101420.png)
 
 
 ```css
@@ -319,7 +319,7 @@ body
   align-items: flex-start | flex-end | center | baseline | stretch;
 }
 ```
-![](https://gitee.com/cc12703/figurebed/raw/master/img/20201109101456.png)
+![](http://picbed.cc12703.com/20201109101456.png)
 
 
 
@@ -378,7 +378,7 @@ body
   grid-template-rows: repeat(3, 33.33%);
 }
 ```
-![](https://gitee.com/cc12703/figurebed/raw/master/img/20210907151902.png)
+![](http://picbed.cc12703.com/20210907151902.png)
 
 
 

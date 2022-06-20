@@ -34,7 +34,7 @@ var vm = new Vue({
 ### 生命周期回调
 
 #### 图示
-![](https://gitee.com/cc12703/figurebed/raw/master/img/vue-生命周期.png)
+![](http://picbed.cc12703.com/vue-生命周期.png)
 
 
 #### 说明

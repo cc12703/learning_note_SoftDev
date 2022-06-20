@@ -36,7 +36,7 @@
 * www：三级域名中的主机，提供web服务
 
 #### 图示
-![](https://gitee.com/cc12703/figurebed/raw/master/img/20210619235425.png)
+![](http://picbed.cc12703.com/20210619235425.png)
 
 
 
@@ -66,7 +66,7 @@
 	* 一个区域是DNS域名控件的一棵子树，可以单独管理
 
 #### 图示
-![](https://gitee.com/cc12703/figurebed/raw/master/img/20210626000251.png)
+![](http://picbed.cc12703.com/20210626000251.png)
 
 ### 类型
 
@@ -106,5 +106,5 @@
 1. 根服务器
 
 #### 图示
-![](https://gitee.com/cc12703/figurebed/raw/master/img/20210626002430.png)
+![](http://picbed.cc12703.com/20210626002430.png)
 

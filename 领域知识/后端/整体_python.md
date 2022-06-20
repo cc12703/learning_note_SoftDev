@@ -16,7 +16,7 @@
 
 
 #### 图示
-![](https://gitee.com/cc12703/figurebed/raw/master/img/20220426115816.png)
+![](http://picbed.cc12703.com/20220426115816.png)
 
 
 ### FastCGI
@@ -47,7 +47,7 @@
 
 
 #### 图示
-![](https://gitee.com/cc12703/figurebed/raw/master/img/20220426121605.png)
+![](http://picbed.cc12703.com/20220426121605.png)
 
 
 ### uWSGI
@@ -64,7 +64,7 @@
 * App：应用，处理数据，渲染页面
 
 ##### 图示
-![](https://gitee.com/cc12703/figurebed/raw/master/img/20220426121950.png)
+![](http://picbed.cc12703.com/20220426121950.png)
 
 
 

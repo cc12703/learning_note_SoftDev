@@ -271,7 +271,7 @@ public interface OrderRepository
         * application.yml
 
 ##### 图示
-![](https://gitee.com/cc12703/figurebed/raw/master/img/20210223182548.png)
+![](http://picbed.cc12703.com/20210223182548.png)
 
 
 ### 配置示例

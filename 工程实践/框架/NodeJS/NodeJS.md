@@ -103,7 +103,7 @@ npm实现了该规范，作为node的包管理器
 * windows上使用IOCP来实现
 
 **图示**
-![](https://gitee.com/cc12703/figurebed/raw/master/img/20201106225005.png)
+![](http://picbed.cc12703.com/20201106225005.png)
 
 
 ### 基本要素
@@ -123,7 +123,7 @@ Node自身的执行模型，一个无限循环，每次循环为一个Tick
 * 执行回调函数
 
 **图示**
-![](https://gitee.com/cc12703/figurebed/raw/master/img/20201106225122.png)
+![](http://picbed.cc12703.com/20201106225122.png)
 
 
 ### 其他异步API
@@ -134,7 +134,7 @@ Node自身的执行模型，一个无限循环，每次循环为一个Tick
 * 问题：精确度不高
 
 **图示**
-![](https://gitee.com/cc12703/figurebed/raw/master/img/20201106225148.png)
+![](http://picbed.cc12703.com/20201106225148.png)
 
 
 
@@ -148,7 +148,7 @@ Node自身的执行模型，一个无限循环，每次循环为一个Tick
 * 事件循环不停的处理这些网络IO事件
 
 **图示**
-![](https://gitee.com/cc12703/figurebed/raw/master/img/20201106225214.png)
+![](http://picbed.cc12703.com/20201106225214.png)
 
 
 ## 异步编程
@@ -202,7 +202,7 @@ util.inherits(Stream, events.EventEmitter);
 将业务中不可变的部分封装在Deferred中，将可变部分交给了Promise
 
 **图示**
-![](https://gitee.com/cc12703/figurebed/raw/master/img/20201106225248.png)
+![](http://picbed.cc12703.com/20201106225248.png)
 
 
 #### 流程控制库

@@ -60,7 +60,7 @@
 * 请求数据
 
 #### 图示
-![](https://gitee.com/cc12703/figurebed/raw/master/img/20211025161908.png)
+![](http://picbed.cc12703.com/20211025161908.png)
 
 #### 示例
 ```http
@@ -82,7 +82,7 @@ name=Professional%20Ajax&publisher=Wiley
 * 响应数据
 
 #### 图示
-![](https://gitee.com/cc12703/figurebed/raw/master/img/20211025161921.png)
+![](http://picbed.cc12703.com/20211025161921.png)
 
 #### 示例
 ```http
@@ -201,7 +201,7 @@ Content-Type: text/html; charset=UTF-8
 ### 分块传输
 * 启用：`Transfer-Encoding: chunked`
 * 每个分块包含一个数据长度（十六进制）和 真实数据
-	* 图示：![](https://gitee.com/cc12703/figurebed/raw/master/img/20211025200259.png)
+	* 图示：![](http://picbed.cc12703.com/20211025200259.png)
 * 使用一个长度值为0的分块标记传输结束
 * 使用`Trailer`在数据末尾追加一段数据
 

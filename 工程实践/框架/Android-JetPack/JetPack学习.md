@@ -18,7 +18,7 @@
 ### 推荐架构
 
 #### 架构图
-![](https://gitee.com/cc12703/figurebed/raw/master/img/20201111113003.png)
+![](http://picbed.cc12703.com/20201111113003.png)
 
 
 #### 界面
@@ -81,7 +81,7 @@
 
 
 #### 生命周期
-![](https://gitee.com/cc12703/figurebed/raw/master/img/20201111113608.png)
+![](http://picbed.cc12703.com/20201111113608.png)
 
 
 #### 监听者

@@ -64,7 +64,7 @@ obj.test();
 
 ## 结构框图
 
-![](https://gitee.com/cc12703/figurebed/raw/master/img/20201120195228.png)
+![](http://picbed.cc12703.com/20201120195228.png)
 
 ### 说明
 

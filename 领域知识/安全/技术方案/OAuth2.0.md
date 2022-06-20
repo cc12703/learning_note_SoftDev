@@ -28,7 +28,7 @@
 * 过程：客户端请求令牌，用户对客户端授权，客户端管理令牌，用户管理客户端
 
 #### 图示
-![](https://gitee.com/cc12703/figurebed/raw/master/img/20201231183044.png)
+![](http://picbed.cc12703.com/20201231183044.png)
 
 ### 授权委托
 * 委托是OAuth强大功能的根基
@@ -78,7 +78,7 @@
 
 ### 授权码许可流程
 #### 图示
-![](https://gitee.com/cc12703/figurebed/raw/master/img/“3311609687281_.pic_hd”的副本.png)
+![](http://picbed.cc12703.com/3311609687281.png)
 
 
 ### 角色
@@ -127,7 +127,7 @@
 * 客户端使用该令牌向授权服务器请求新的访问令牌
 
 ##### 流程图示
-![](https://gitee.com/cc12703/figurebed/raw/master/img/20210104232155.png)
+![](http://picbed.cc12703.com/20210104232155.png)
 
 ##### 原因
 * 刷新令牌取代了永不过期的访问令牌
@@ -154,7 +154,7 @@
 * 接收方将浏览器重定向至发起方托管的URL,并附加参数
 
 ##### 流程图示
-![](https://gitee.com/cc12703/figurebed/raw/master/img/“3331609775964_.pic_hd”的副本.png)
+![](http://picbed.cc12703.com/3331609775964.png)
 
 
 ### 授权许可类型
@@ -197,7 +197,7 @@
 * JSON Web Token - JWT
 
 #### 如何选择
-![](https://gitee.com/cc12703/figurebed/raw/master/img/20210108234524.png)
+![](http://picbed.cc12703.com/20210108234524.png)
 
 
 
@@ -332,7 +332,7 @@
 * 由受保护资源验证
 
 ##### 图示
-![](https://gitee.com/cc12703/figurebed/raw/master/img/oauth2_token_life.png)
+![](http://picbed.cc12703.com/oauth2_token_life.png)
 
 
 

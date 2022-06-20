@@ -24,11 +24,11 @@
 ## 框架
 
 ### 架构图
-![](https://gitee.com/cc12703/figurebed/raw/master/img/20201111113003.png)
+![](http://picbed.cc12703.com/20201111113003.png)
 
 
 #### 数据结构图
-![](https://gitee.com/cc12703/figurebed/raw/master/img/20210722101121.png)
+![](http://picbed.cc12703.com/20210722101121.png)
 
 ### 要点
 * 精简界面控制器的代码（Activity, Fragment）

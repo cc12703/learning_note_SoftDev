@@ -57,7 +57,7 @@ new Vue({
 ### 过渡名
 
 #### 图示
-![](https://gitee.com/cc12703/figurebed/raw/master/img/20201109114510.png)
+![](http://picbed.cc12703.com/20201109114510.png)
 
 #### 说明
 * v-enter 进入的开始状态，元素被插入前生效
