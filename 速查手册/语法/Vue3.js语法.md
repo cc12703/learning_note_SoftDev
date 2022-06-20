@@ -91,6 +91,10 @@ onMounted(() => {
   * `.capture` 使用事件捕获模式，内部元素触发的事件先处理
   * `.self`  只当在 event.target 是当前元素自身时触发处理函数
   * `.once`  点击事件只触发一次
+* `v-on:xxx="<method-name>"`  事件处理器，绑定一个方法
+* `v-on:xxx="func(...)"`      事件处理器，内联js语句
+* `v-on:xxx="func(..., $event)"`  事件处理器，传入DOM事件
+* `v-on:xxx="(arg) => func(arg)"` 事件处理器，使用lamda代码
 * `v-model` 在表单元素上创建双向数据绑定
   * `.lazy`   将同步模式转成change事件，而非input事件
   * `.number` 自动将用户的输入值转为数值类型
@@ -183,6 +187,7 @@ onMounted(() => {
 
 <div id="example-2">
   <button v-on:click="greet">Greet</button>
+  <cascader @change="(val) => changed(val)"></cascader>
 </div>
 
 <script>
@@ -195,6 +200,9 @@ var example2 = new Vue({
   methods: {
     greet: function (event) {
       alert('Hello ' + this.name + '!')
+    },
+    changed: function (val) {
+      ...
     }
   }
 })
@@ -281,6 +289,7 @@ yearTwo.value = 2020
 * `const xxx = computed(() => { ... })` 定义
 * `const xxx = computed<type>(() => { ... })` 定义，带类型标注
 * `const xxx = computed({ get() { ... }, set(newVal) { ... } })` 定义可写属性
+* `const xxx = computed({ get: () => { ... }, set: (newVal) => { ... } })` 定义可写属性，lambda格式
 
 
 #### 示例
@@ -304,6 +313,8 @@ const publishedBooksMessage = computed(() => {
 })
 
 
+
+
 const firstName = ref('John')
 const lastName = ref('Doe')
 
@@ -315,12 +326,23 @@ const fullName = computed({
     [firstName.value, lastName.value] = newValue.split(' ')
   }
 })
+
+//lambda
+const fullName = computed({
+  get: () => {
+    return firstName.value + ' ' + lastName.value
+  },
+  set: (newValue) => {
+    [firstName.value, lastName.value] = newValue.split(' ')
+  }
+})
 ```
 
 ### 侦听器
-* `watch(<var>, async(newVal, oldVal) => { ... })`  监听响应式对象、变量
+* `watch(<var>, (newVal, oldVal) => { ... })`  监听响应式变量，ref和reactive
+* `watch(() => <var>.<field>, (newVal, oldVal) => { ... })`  监听响应式对象中的属性
 * `watch(() => <func>, (resultVal) => { ... })`   监听函数
-* `watchEffect(async () => { ... })`      立即执行，并自动跟踪依赖
+* `watchEffect(() => { ... })`      立即执行，并自动跟踪依赖
 
 #### 回调时机
 * 默认回调会在组件更新前调用
@@ -350,6 +372,10 @@ watch(
     console.log(`sum of x + y is: ${sum}`)
   }
 )
+
+
+const z = reactive({ count: 0})
+watch(() => z.count, (newCount, oldCount) => { ... })
 
 
 //自动跟踪`url.value`
@@ -515,6 +541,32 @@ const value = computed({
 <template>
   <input v-model="value" />
 </template>
+```
+
+
+### 状态驱动CSS
+* 在\<style>中使用v-bind将CSS值关联到组件状态上
+* `<css-name>: v-bind(<var-name>)`
+* `<css-name>: v-bind('<express>')`
+
+
+#### 示例
+```vue
+<script setup>
+const theme = {
+  color: 'red'
+}
+</script>
+
+<template>
+  <p>hello</p>
+</template>
+
+<style scoped>
+p {
+  color: v-bind('theme.color');
+}
+</style>
 ```
 
 
