@@ -111,6 +111,7 @@ type Callback = (data: string) => void
 * `<elm> = <array>.pop()`  从尾部移除元素，并返回该元素
 * `<index = <array>.indexOf(elm)` 返回给定元素的首个索引，无返回-1
 * `<index = <array>.lastIndexOf(elm)` 返回给定元素的最后一个索引，无返回-1
+* `<bool> = <array>.includes(elm)`  判断给定元素是否在数组中
 
 * `<array> = <array>.concat(<array>, <array>)` 合并数组，返回一个新数组
 * `<del-array> = <array>.splice(startIndex, count)` 从给定索引开始删除元素，直接修改原数组

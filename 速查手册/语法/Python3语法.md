@@ -96,6 +96,7 @@ reduce(lambda x,y: x + y, [0,1,2,3,4], 0)
 * `<list> = list(<iter>)`   包装成列表
 * `<list> = [expr for iter_val in <iter>]` 列表解析
 * `for index, val in enumerate(<list>)`  带索引的循环
+* `<index = <list>.index(<val>) if <val> in <list> else -1`  模拟find方法
 
 
 #### 示例
