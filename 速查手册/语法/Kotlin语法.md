@@ -14,6 +14,32 @@
 * `if (<condition>) <result> else <result>` 三元表达式
 
 
+
+### lambda表达式
+* 被大括号包含，参数在`->`之前，函数体在`->`之后
+* `it`为单个参数的隐式名字，不需要声明
+* `_`用于未使用参数的声明
+* 声明格式：`(<type>, <type>) -> <return-type>`
+* 对于Java中的SAM接口，调用时可以使用lambda
+
+#### 示例
+```kotlin
+{x: Int, y: Int -> x + y}
+
+listOf(1, 2, 3).map { it * 2}
+
+map.forEach { _, value -> println("$value!") }
+
+//声明
+(Int, Int) -> Unit
+
+//Java 方法
+void postponeComputation(int delay, Runnable computation);
+//Kotlin中调用
+postponeComputation(1000) { println(42) }
+
+```
+
 ### 函数
 
 #### 参数

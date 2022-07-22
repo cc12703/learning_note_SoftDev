@@ -17,6 +17,16 @@
 * 变量后使用`!`，表示类型推断排除null, undefined
 * 属性，参数中使用`?`表示该项可选
 * `...`用于将数组转换成逗号参数形式
+* `??` 用于当表达式为null、undefined时，设置一个默认值
+
+
+#### 示例
+```ts
+
+const firstName = null
+const useName = firstName ?? "Guest"
+//output: Guest
+```
 
 ### 解构
 * `[var_1, var_2] = [ ... ]`                数组解构
