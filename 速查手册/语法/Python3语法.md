@@ -222,6 +222,11 @@ f"hello {name}, You are {arg}
 
 
 ### String
+* 分为：普通类型（默认类型），字节流类型
+
+* `<b-str> = <str>.encode(<type>)`  编码成字节流类型，机器可认
+* `<str> = <b-str>.decode(<type>)`  解码成普通类型，人可认
+
 * `<str> = <str>.strip()`  去除两边的空格
 
 * `<list> = <str>.split()`  使用空格拆分字符串
