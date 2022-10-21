@@ -8,32 +8,58 @@
 
 ## IoC (Inversion of Control)
 
-### 注解
+### 标注
 
-#### 定义Bean类
-* `@Component` 标注通用组件
-* `@Controller` 标注controller实现类
-* `@Service` 标注service实现类
-* `@Repository` 标注Dao实现类
+* `@Component` 	定义通用组件，用于类
+* `@Controller` 定义controller类，用于类
+* `@Service` 	定义service类，用于类
+* `@Repository` 定义Dao类，用于类
+* `@Bean`       生成Bean对象，用于方法
 
+* `@PostConstruct` 	标注初始化方法
+* `@PreDestroy`  	标注销毁方法
 
-#### Bean生命周期
-* `@PostConstruct` 标注初始化方法
-* `@PreDestroy`  标注销毁方法
-
-
-#### 注入Bean
-* `@Value` 注入普通值
-* `@Resource` 根据名字注入对象
-* `@Autowired`  根据类型注入对象
+* `@Value` 		注入普通值
+* `@Resource` 	根据名字注入对象
+* `@Autowired`  根据类型注入对象，可用于构造器、字段、方法
 	* `@Primary`    优先注入
 	* `@Qualifier`  根据名字来注入
-* `@Scope`  设置作用范围
+* `@Scope`  	设置作用范围
 	* `singleton` 单例
 	* `prototype` 多例
 
-#### 其他
 * `@ComponentScan` 标明采样什么策略去扫描装配Bean
+
+
+#### 示例
+```kotlin
+
+//字段注入
+@Autowired
+private User user;
+
+//方法注入
+@Autowired
+public void initCity(City city) {
+	this.city = city;
+}
+
+//构造函数注入
+class UserHolder {
+
+	@Autowired
+	public UserHolder(User user) {
+		this.user = user;
+	}
+}
+
+
+//生成Bean对象
+@Bean
+public AccountDao accountDao(){
+	return new AccountDao();
+}
+```
 
 
 
@@ -101,11 +127,19 @@ class XXXController {
 
 * `@OneToOne` 描述一对一映射
 	* `fetch` 抓取策略
-	* `cascade` 级联操作策略
+	* `cascade` 级联操作策略（给当前实体操作另一个实体的权限）
+		* `PERSIST` 保存当前实体时，与其有映射关系的实体也会被保存
+		* `REMOVE` 删除当前实体时，与其有映射关系的实体也会被删除
+		* `MERGE`  更新当前实体数据时，与其有映射关系的实体也会被更新
+		* `DETACH` 删除当前实体时，与其相关的外键都会被撤销
+		* `REFRESH` 刷新当前实体时，也刷新有映射关系的实体
 * `@ManyToOne` 描述多对一映射
 	* `fetch` 抓取策略
 	* `cascade` 级联操作策略
+
 * `@OneToMany` 描述一对多映射
 	* `fetch` 抓取策略
 	* `cascade` 级联操作策略
+
 * `@ManyToMany` 描述多对多映射
+

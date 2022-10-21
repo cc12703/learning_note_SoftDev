@@ -341,6 +341,7 @@ const fullName = computed({
 ### 侦听器
 * `watch(<var>, (newVal, oldVal) => { ... })`  监听响应式变量，ref和reactive
 * `watch(() => <var>.<field>, (newVal, oldVal) => { ... })`  监听响应式对象中的属性
+* `watch([ <conds> ], ([ <newVals> ], [ <oldVals> ]) => { ... })`  监听多个条件
 * `watch(() => <func>, (resultVal) => { ... })`   监听函数
 * `watchEffect(() => { ... })`      立即执行，并自动跟踪依赖
 
@@ -357,6 +358,7 @@ import { ref, watch } from 'vue'
 const x = ref(0)
 const y = ref(0)
 
+
 watch(x, (newX) => {
   console.log(`x is ${newX}`)
 })
@@ -364,6 +366,12 @@ watch(x, (newX) => {
 watch(x, (newX, oldX) => {
   console.log(`x is ${newX}`)
 })
+
+//监听多个变量
+watch([x, y], ([newX, newY], [oldX, oldY])) {
+  console.log(`x is ${newX}`)
+  console.log(`y is ${newY}`)
+}
 
 //使用 getter 函数
 watch(
