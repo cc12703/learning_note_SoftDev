@@ -175,7 +175,10 @@ body {
 * `background-position` 背景的起始位置
 * `background-repeat` 背景图片如何重复
 * `background-attachment` 背景是否随其余部分滚动  
-
+* `background-filter`  背景滤镜
+  * `grayscale(percent)` 灰度
+  * `blur(value)`        模糊
+  * `opacity(percent)`   透明度
 
 #### 示例
 ```css
