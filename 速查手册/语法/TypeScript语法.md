@@ -167,7 +167,7 @@ words.map(word => word + "_ext")
 words.flatMap(word => [work, word + "_ext"])
 //output: ['spray', 'limit', 'elite', 'exuberant', 'destruction', 'spray_ext', 'limit_ext', 'elite_ext', 'exuberant_ext', 'destruction_ext']
 
-words.reduct((result, word) => result + "_" + word, "")
+words.reduce((result, word) => result + "_" + word, "")
 //output: 'spray_limit_elite_exuberant_destruction'
 
 for(const word of words) {

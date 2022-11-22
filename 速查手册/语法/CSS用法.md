@@ -172,8 +172,14 @@ body {
 * `background-color`  背景颜色   
 * `background-image` 背景图片 
 * `background-size`  背景大小
+  * `contain`  不缩放图片来填充容器
+  * `cover`    通过缩放图片来填充容器
+  * `auto auto`  在指定方向上缩放图片
 * `background-position` 背景的起始位置
 * `background-repeat` 背景图片如何重复
+  * `repeat`   重复放置
+  * `repeat-x` 在X轴上重复放置
+  * `no-repeat`  不重复放置
 * `background-attachment` 背景是否随其余部分滚动  
 * `background-filter`  背景滤镜
   * `grayscale(percent)` 灰度

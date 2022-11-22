@@ -252,6 +252,7 @@ new Vue({
 ### 响应式对象
 * `const xxx = reactive({ xxx: <value> })`    定义
 * `cosnt xxx: <type> = reactive({ xxx: <value> })`  定义，带类型标注
+* `shallowReactive`  浅层作用形式，只有根属性是响应式的
 
 #### 示例
 ```ts
