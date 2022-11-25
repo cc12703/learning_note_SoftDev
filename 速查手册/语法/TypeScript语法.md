@@ -144,6 +144,10 @@ type Callback = (data: string) => void
 * `<str> = <array>.join()` 使用逗号连接元素组成一个字符串
 * `<str> = <array>.join(sep)` 使用分隔符连接元素组成一个字符串
 
+* `<array>.sort()`  按字母顺序进行排序
+* `<array>.sort((a, b) => <oper>)`  按比值函数的值进行排序，返回值越小排在越前面
+* `<array>.reverse()` 反转数组中的元素
+
 #### 示例
 ```ts 
 const words = ['spray', 'limit', 'elite', 'exuberant', 'destruction']
@@ -175,6 +179,9 @@ for(const word of words) {
 }
 //outputs: spray \n limit \n elite \n exuberant \n destruction
 
+
+[40, 100, 1, 5, 25, 10].sort((a, b) => a -b)
+//output: [1,5,10,25,40,100]
 ```
 
 
@@ -403,7 +410,8 @@ class Point3D extends Point {
 
 
 ### 接口
-
+* `interface` 定义接口
+* 接口无法转换成javaScript
 
 
 ### 模块
