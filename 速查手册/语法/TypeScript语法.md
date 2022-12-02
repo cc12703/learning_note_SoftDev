@@ -189,6 +189,9 @@ for(const word of words) {
 * `<map> = new Map()` 或 `<map> = {}`创建一个空映射
 * `<map> = new Map([[key_1, val_1], [key_2, val_2]])` 创建一个映射
 
+* `<map> = new Map(Object.entries(<obj>))` 从狭义对象中生成映射
+* `<obj> = Object.fromEntries(<map>)`      映射转换成对象
+
 * `size = <map>.size` 获取映射大小，键值对的个数
 * `<map> = <map>.set(<ey, val)` 增加、更新元素
 * `val = <map>.get(<key>)` 获取元素
@@ -337,6 +340,7 @@ namespace Direction {
 * `<bool> = <obj>.hasOwnProperty(name)` 判断自有属性是否存在
 * `<bool> = name in <obj> ` 判断属性是否存在（自有和继承都算）
 
+
 ### 函数
 * `<var> = function (<arg>, <arg>) { }`  创建函数
 
@@ -412,6 +416,26 @@ class Point3D extends Point {
 ### 接口
 * `interface` 定义接口
 * 接口无法转换成javaScript
+* `readonly` 定义只读字段
+* `<name>?`  定义可选字段
+
+
+#### 示例
+```ts
+interface Person {
+  name?: string,
+  readonly age: number,
+  run?(): void,
+}
+
+const why: Person = {
+  // name 键值对缺失不会报错
+  age: 18
+}
+
+why.run&&why.run() //判断函数执行
+
+```
 
 
 ### 模块
