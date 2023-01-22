@@ -248,6 +248,13 @@ digraph G {
 * 自定义排序 `<list>.sortBy { elm -> <oper> }`
 
 
+#### 集合操作
+* 求交集  `<list> = <list>.intersect(<list>)`
+* 求并集  `<list> = <list>.union(<list>)`
+* 求差集  `<list> = <listA>.subtrace(<listB>)` 
+    * 存在于A中，不存在于B中
+
+
 #### 分组、分块
 * 将列表分块 `<nest-list> = <list>.chunked(size)`
 * 将列表分块并转换 `<list> = <list>.chunked(size) { elm -> <oper> }`

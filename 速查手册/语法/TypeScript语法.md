@@ -337,6 +337,7 @@ namespace Direction {
 ### 狭义对象
 * `<obj> = { <field-name>: <field-value>, <field-name>: <field-value>}` 创建对象
 * `<var> = Object.keys(<obj>)` 获取所有属性
+* `<obj>[<attr-name>] = <attr-value>` 增加、修改属性
 * `<bool> = <obj>.hasOwnProperty(name)` 判断自有属性是否存在
 * `<bool> = name in <obj> ` 判断属性是否存在（自有和继承都算）
 
