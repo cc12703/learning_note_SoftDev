@@ -1,0 +1,77 @@
+
+
+
+# JS库
+
+
+## 概述
+
+### 通用
+
+#### 网络
+* [axios](https://github.com/axios/axios) 支持Promise的HTTP客户端
+* [cheerio](https://github.com/cheeriojs/cheerio) 轻量级的JQuery核心实现
+   * 用于解析HTML内容
+* [form-data](https://github.com/form-data/form-data) 创建muliipart/form-data流
+   * 用于上传文件
+* [qs](https://github.com/ljharb/qs) url参数转换库
+* [uri.js](https://github.com/medialize/URI.js) URL操作库
+    * [文档](http://medialize.github.io/URI.js/)
+
+### 存储
+* [TypeORM](https://www.bookstack.cn/read/TypeORM-0.2.20-zh/README.md) 数据库的ORM
+    * [中文文档](https://www.bookstack.cn/read/TypeORM-0.2.20-zh/README.md)
+* [fs-extra](https://github.com/jprichardson/node-fs-extra) Node文件库的扩展
+* [watch](https://github.com/mikeal/watch) 文件夹监控，Node平台
+* [rimraf](https://github.com/isaacs/rimraf)  删除目录，Node平台
+
+
+### XLXS
+* [SheetJS](https://github.com/SheetJS/sheetjs) XLXS读写
+    * [文档](https://docs.sheetjs.com/docs/)
+    * [中文文档](https://www.jianshu.com/p/31534691ed53)
+* [xlsx-populate](https://github.com/dresende/xlsx-populate) XLXS读写
+* [excel.js](https://github.com/exceljs/exceljs) xlxs操作库
+    * [文档](https://github.com/exceljs/exceljs/blob/master/README_zh.md)
+
+### 其他
+* [dayjs](https://github.com/iamkun/dayjs/) 时间处理库
+    * [中文文档](https://day.js.org/docs/zh-CN/installation/installation)
+* [bluebird](https://github.com/petkaantonov/bluebird) Promise实现库
+* [iconv-lite](https://github.com/ashtuchkin/iconv-lite) 编码转换库
+
+
+### 图形图像
+* [Fabric.js](https://github.com/fabricjs/fabric.js) Canvas库
+    * [文档](http://fabricjs.com/docs/index.html)
+* [Konva.js](https://github.com/konvajs/konva)  Canvas库
+    * [文档](https://konvajs.org/docs/index.html)
+* [Tween.js](https://github.com/tweenjs/tween.js) 动画库
+    * [文档](http://tweenjs.github.io/tween.js/docs/user_guide.html)
+* [flatten.js](https://github.com/alexbol99/flatten-js) 2D几何库
+    * [文档](https://alexbol99.github.io/flatten-js/index.html)
+
+* [echarts](https://github.com/apache/echarts) 数据可视化库
+    * [中文文档](https://echarts.apache.org/handbook/zh/get-started/)
+* [three.js](https://github.com/mrdoob/three.js/) 3D库
+    * [文档](https://threejs.org/docs/index.html)
+* [heatmap.js](https://github.com/pa7/heatmap.js) 热力图库
+    * [文档](https://www.patrick-wied.at/static/heatmapjs/docs.html)
+
+### GIS
+
+
+### 应用框架
+* [Vue3](https://github.com/vuejs/) 应用框架
+    * [中文文档](https://cn.vuejs.org/guide/introduction.html)
+* [Pinia](https://github.com/vuejs/pinia)  Vue的状态管理库
+    * [中文文档](https://pinia.vuejs.org/zh/introduction.html)
+* [Vue Router]() Vue的路由库
+    * [中文文档](https://router.vuejs.org/zh/introduction.html)
+* [Vue Use](https://github.com/vueuse/vueuse)  Vue辅助库
+    * [文档](https://vueuse.org/guide/)
+
+
+### UI控件
+* [element-plus](https://github.com/element-plus/element-plus) PC界面的控件库，基于Vue3
+    * [中文文档](https://element-plus.org/zh-CN/component/button.html)

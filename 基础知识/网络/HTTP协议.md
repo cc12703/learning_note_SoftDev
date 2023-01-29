@@ -311,6 +311,9 @@ Content-Type: text/html; charset=UTF-8
 * `308` 永久重定向，重定向后方法和实体不允许变动
 
 
+
+
+
 ## Cookie
 
 * 服务器委托浏览器存储一些数据
@@ -334,6 +337,12 @@ Content-Type: text/html; charset=UTF-8
 	* `HttpOnly`：只能通过浏览器HTTP传输
 	* `SameSite`：防范跨站请求伪造
 	* `Secure`：只能用HTTPS传输
+
+### 类型
+* 会话cookie：一种临时cookie，用于记录用户的设置和偏好
+* 持久cookie：用于记录配置文件或登录名
+* 区别是过期时间不一样
+
 
 ### 应用
 * 身份识别：保存用户的登录信息，实现会话
