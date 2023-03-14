@@ -333,6 +333,7 @@ class MyClass :
 ### lambda
 * 用于创建匿名函数
 * `lambda [arg_1, arg_2, ...]: <expression>` 定义语法
+* 外部变量引用：闭包会记住变量的名称和作用范围，在需要时进行解析
 
 
 #### 示例
@@ -469,7 +470,8 @@ Server = Tuple[Address, ConnectionOptions]
 * `Number, String, Tuple` 不可变，可从typing中导出
 * `List, Dict, Set` 可变，可从typing中导出
 * `int, float, bool, complex` 数字类型
-
+* `Optional[<type>]`  可选类型
+    * 等价于 `Union[<type>, None]`
 
 
 ### 其他
