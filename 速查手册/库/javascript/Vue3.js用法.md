@@ -108,6 +108,7 @@ onMounted(() => {
 * 属性插值 `<div v-bind:id="variable"></div>`  
 * 绑定HTML Classs属性 `<div v-bind:class="{ className: variable }"></div>`  
 * 绑定HTML Classs属性 `<div v-bind:class="[ className1, className2 ]"></div>` 
+* 绑定HTML Style属性 `<div v-bind:style="{ styleName: variable,  styleName: variable }"></div>`  
 
 * 条件渲染 `<div v-if="cond">content</div>` 
 * 分组渲染 `<template v-if="ok"> content  </template>`
@@ -151,6 +152,8 @@ onMounted(() => {
 <div v-bind:class="[activeClass, errorClass]"></div>
 <!-- 若activeClass: 'active'，errorClass: 'text-danger'
   则渲染为<div class="active text-danger"></div> -->
+
+<div v-bind:style="{ color: activeColor, fontSize: fontSize + 'px'}" />
 
 
 <template v-if="ok"> 

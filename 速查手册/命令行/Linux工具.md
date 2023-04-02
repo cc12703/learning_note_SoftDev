@@ -82,3 +82,45 @@ curl -H "Content-type:application/json" -X POST -d '{ ... }' http://google.com/l
 curl -G -d 'g=kitties' -d 'count=20' http://google.com/search
 #out: http://google.com/search?q=kitties&count=20
 ```
+
+
+
+## iptables
+* 功能：添加、删除防火墙的策略规则
+* 格式：`iptables [-t table] COMMAND [chain] CRETIRIA -j ACTION`
+
+### table（规则表）
+* `filter`：过滤规则表
+* `nat`：地址转换规则表
+* `mangle`：修改数据标记位规则表
+* `raw`：跟踪数据表规则表
+
+### COMMAND（子命令）
+* `-A`：添加规则
+* `-D`：删除规则
+* `-I`：插入规则
+* `-F`：清空规则
+* `-L`：列出规则
+
+
+### CRETIRIA（匹配参数）
+* `-s` 匹配源地址
+* `-d` 匹配目标地址
+* `-i` 匹配入站网卡接口
+* `-o` 匹配出站网卡接口
+
+### chain（链表）
+* `PREROUTING`：路由前过滤
+* `POSTROUTING`：路由后过滤
+* `FORWARD`：转发数据过滤
+* `INPUT`：入站数据过滤
+* `OUTPUT`：出站数据过滤
+
+### ACTION（触发动作）
+* `ACCEPT`：允许包通过
+* `REJECT`：拒绝包通过
+* `DROP`：丢弃包
+* `DNAT`：目标地址转换
+* `SNAT`：源地址转换
+* `MASQUERADE`：地址欺骗
+* `REDIRECT`：重定向
