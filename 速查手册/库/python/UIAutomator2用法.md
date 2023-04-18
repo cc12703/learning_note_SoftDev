@@ -41,6 +41,33 @@
 
 
 
+### XPATH
+* `//xxx` 等于原生xpath
+* `xxx`  等价于 `//*[@text='xxx' or @content-desc='xxx' or @resource-id='xxx']`
+* `@xxx` 等价于 `//*[@resource-id="xxx"]`
+* `^xxx` 等价于 `//*[re:match(text(), '^xxx')]`
+* `xxx%` 等价于 `//*[starts-with(text(), 'xxx')]`
+* `%xxx` 等价于 `//*[ends-with(text(), 'xxx')]`
+* `%xxx%` 等价于 `//*[contains(text(), 'xxx')]`
+
+
+#### 示例
+```
+@smartisanos:id/right_container
+    //*[@resource-id="smartisanos:id/right_container"]
+
+^.*道了
+    //*[re:match(text(), '^.*道了')]
+
+%知道%
+    //*[contains(text(), '知道')]
+
+
+搜索
+    //*[@text="搜索" or @content-desc="搜索" or @resource-id="搜索"]
+```
+
+
 ## 控件操作
 
 ### 遍历
@@ -48,8 +75,18 @@
 * `<uobj>[<index>]`  按索引值获取节点
 * `for <item> in <uobj>`  遍历节点
 
-* `<uobj>.exists`  判断是否存在
+* `<uobj>.exists`  判断是否存在，返回值是一个对象，每次使用使都会检测一次
+* `<uobj>.exists()`  判断是否存在，返回值是一个布尔型
 * `<uobj>.info`  获取节点信息
+
+
+#### 示例
+```py
+isExists = u2(text='test').exists
+if isExists :  #会检测一次
+    #....
+    return isExists  #会检测一次
+```
 
 
 ### 带超时等待

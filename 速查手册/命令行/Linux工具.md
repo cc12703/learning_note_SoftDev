@@ -90,12 +90,13 @@ curl -G -d 'g=kitties' -d 'count=20' http://google.com/search
 * 格式：`iptables [-t table] COMMAND [chain] CRETIRIA -j ACTION`
 
 ### table（规则表）
-* `filter`：过滤规则表
+* `filter`：过滤规则表（默认表）
 * `nat`：地址转换规则表
 * `mangle`：修改数据标记位规则表
 * `raw`：跟踪数据表规则表
 
 ### COMMAND（子命令）
+* `-P`：设置默认策略
 * `-A`：添加规则
 * `-D`：删除规则
 * `-I`：插入规则
@@ -108,6 +109,12 @@ curl -G -d 'g=kitties' -d 'count=20' http://google.com/search
 * `-d` 匹配目标地址
 * `-i` 匹配入站网卡接口
 * `-o` 匹配出站网卡接口
+* `-p` 匹配协议
+* `-dport` 匹配目标端口号
+* `-sport` 匹配源端口号
+* `--src-range` 匹配源地址范围
+* `--dst-range` 匹配目标地址范围
+* `--mac-source`  匹配源MAC地址
 
 ### chain（链表）
 * `PREROUTING`：路由前过滤
@@ -120,7 +127,43 @@ curl -G -d 'g=kitties' -d 'count=20' http://google.com/search
 * `ACCEPT`：允许包通过
 * `REJECT`：拒绝包通过
 * `DROP`：丢弃包
-* `DNAT`：目标地址转换
-* `SNAT`：源地址转换
-* `MASQUERADE`：地址欺骗
+* `DNAT`：目标地址转换，目的地址转换，让外网机器可以访问内网
+* `SNAT`：源地址转换，让内网机器可以访问外网
+* `MASQUERADE`：动态伪装，自动寻找外网地址并改为正确的外网地址
 * `REDIRECT`：重定向
+
+
+
+### 用法示例
+
+* `iptables –A INPUT –i lo –j ACCEPT` 
+	接受所有来自于lo网卡的数据包
+* `iptables -A INPUT -i eth0 -s 192.168.1.10 -j DROP`  
+	丢弃所有来自于eth0网卡的源IP为192.168.1.10的数据包
+* `iptables –A INPUT –i eth0 –p udp –dport 137:138 –j ACCEPT` 
+	接收来自于UDP端口137，138的数据包
+* `iptables -A INPUT -m mac --mac-source 00:0C:29:56:A6:A2 -j ACCEPT`
+	接受来自于MAC地址00:0C:29:56:A6:A2的数据包
+
+* `iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8080`
+	将80端口的数据包转递到8080端口
+
+* `iptables –t nat –A POSTROUTING –s 192.168.10.10 –o eth1 –j SNAT --to-source 111.196.221.212`
+	将192.168.10.10转换为111.196.211.212
+
+* `iptables -t nat -A POSTROUTING -s 192.168.10.0/24 -j MASQUERADE`
+	使用动态伪装
+
+* `iptables –t nat –A PREROUTING –i eth1 –d 61.240.149.149 –p tcp –dport 80 –j DNAT --to-destination 192.168.10.6`
+	将61.240.149.149转换为192.168.10.6
+
+
+
+### 方案示例
+
+#### 网关
+* `net.ipv4.ip_forward = 1` 打开内核路由转发
+* `iptables -t nat -A POSTROUTING -s 192.168.30.0/24 -d 192.168.40.0/24 -o eth1 -j MASQUERADE`
+	将源30网段，转换成40网段，从eth1中发出
+* `iptables -t nat -A PREROUTING -s 192.168.40.0/24 -d 192.168.30.0/24 -o eth0 -j MASQUERADE`
+	将源40网段，转换成30网段，从eth0中发出
