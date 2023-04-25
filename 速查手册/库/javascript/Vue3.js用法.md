@@ -397,6 +397,25 @@ watchEffect(async () => {
 })
 ```
 
+### 其他
+* `<var> = ref<HTMLElement|null>(null)`  引用html元素
+
+
+#### 示例
+```vue
+<template>
+    <div class="play" ref="container">
+    </div>
+
+</template>
+
+<script lang="ts" setup>
+
+const container = ref<HTMLElement|null>(null)
+</script>
+```
+
+
 
 ## 组件语法
 

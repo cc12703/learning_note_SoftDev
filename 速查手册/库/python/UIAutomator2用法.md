@@ -124,3 +124,5 @@ if isExists :  #会检测一次
 ## 其他
 
 * `<output>, <exitCode> = d.shell(<cmd>)`  执行shell命令
+* `d.screenshot().save(<filename>)`   截屏保存文件
+* `d(<cond>).screenshot().save(<filename>)`  对元素截屏保存文件
