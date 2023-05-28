@@ -53,7 +53,10 @@ const (
 
 
 
-### 导入包
+### 包
+* `package <pkgName>` 定义文件所属的包
+    * `main`包会编译成可执行文件
+    * 其他包会编译成包文件
 * `import <pkgname>`  使用绝对路径导入
     * 目录：`gopath/src/pkgname`
 * `import( . <pkgname>)` 调用函数时，可以省略包名
@@ -91,6 +94,25 @@ if err != nil {
 
 ## 类型
 
+### 布尔
+* `bool`
+* 值：`true`,`false`
+
+
+### 枚举
+* `iota` 默认值为0，每次调用加一
+
+#### 示例
+```go
+const {
+    x = iota  // x == 0
+    y = iota  // y == 1
+    z = iota  // z == 2
+    w         // w == 3
+}
+```
+
+
 ### 数字
 * 无符号：`uint8`(`byte`), `uint16`, `uint32`(`rune`), `uint64`
 * 有符号：`int8`, `int16`, `int32`, `int64`
@@ -119,35 +141,73 @@ func ReadWrite() bool {
     defer file.Close()
     ....
 }
+```
 
+
+### 结构
+* `type <name> struct { <name> <type> ... }`  声明结构
+* `<val> = <struct>.<name>`  读取属性
+* `<struct>.<name> = <val>`  设置属性
+* 使用匿名字段进行结构内嵌
+
+
+#### 示例
+```go
+type Person struct {
+    name string
+    age int
+}
+
+var P Person
+P.name = "xxx"
+P.age = 25
+
+P := Person{ age: 24, name: "xxx" }
+
+
+type Student struct {
+    Person
+    speciality string
+}
+
+mark := Student{ Person{"xxx", 25}, "yyy"}
+name = mark.name
 
 ```
     
 
 ## 集合
 
-### 静态数组
+### 静态数组(array)
 * 长度也是数组类型的一部分
 * 数组不能改变长度
 * `var <name> [<len>]<type>`  定义数组
 * `<name> := [<len>]<type>{ ... }`  定义并初始化数组
 * `<name> := [...]<type>{ ... }`    定义并初始化数组
-* `<name>[<index>] = <val>`  赋值操作
+* `<val> = <name>[<index>]`  读取值
+* `<name>[<index>] = <val>`  赋值
 
 
-### 动态数组
+### 动态数组(slice)
 * `var <name> []<type>`  定义数组
 * `<name> := []<type> { ... }` 定义并初始化数组
+* `<slice> = <slice>[<begin>:<end>]` 获取值，`<end>`不包含
+    * `<slice>[:n]` => `<slice>[0:n]`
+    * `<slice>[n:]` => `<slice>[n:len(<slice>)]`
+    * `<slice>[:]` => `<slice>[0:len(<slice>)]`
 * `<int> = len(<slice>)` 获取长度
 * `<int> = cap(<slice>)`  获取最大容量
 * `<slice> = <slice>.append(<item>...)` 添加元素
 * `<int> = <slice>.copy(<src-slice>)`   拷贝元素
 
-### 字典
-* `var <name> map[<type>]<type>`  定义字典
-* `<name> := map[<type>]<type> { ... }`  定义并初始化字典
-* `<name> = make(map[<type>]<type>)`  定义字典
-* `delete(<name>, <key>)`  删除元素
+### 字典(map)
+* `var <name> map[<key-type>]<val-type>`  定义字典
+* `<name> := map[<key-type>]<val-type> { ... }`  定义并初始化字典
+* `<name> = make(map[<key-type>]<val-type>)`  定义字典
+* `delete(<map>, <key>)`  删除元素
+* `<int> = len(<map>)`     获取键的数量
+* `<val> = <map>[<key>]`   获取值
+* `<map>[<key>] = <val>`   设置值
 
 
 

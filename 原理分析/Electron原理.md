@@ -1,6 +1,6 @@
 [TOC]
 
-# Electron框架
+# Electron原理
 
 ## 总体
 

@@ -167,3 +167,19 @@ curl -G -d 'g=kitties' -d 'count=20' http://google.com/search
 	将源30网段，转换成40网段，从eth1中发出
 * `iptables -t nat -A PREROUTING -s 192.168.40.0/24 -d 192.168.30.0/24 -o eth0 -j MASQUERADE`
 	将源40网段，转换成30网段，从eth0中发出
+
+
+
+
+## tcpdump
+* 功能：用于网络抓包
+
+
+### 通用
+* `-i` 指定网络接口
+* `-w` 将输出重定向到文件
+* `-c` 指定要捕获的报文数上限
+
+
+
+

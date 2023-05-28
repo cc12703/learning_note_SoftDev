@@ -479,7 +479,8 @@ Server = Tuple[Address, ConnectionOptions]
 * `with context_expr [as var]` 用于简化资源的分配和释放
 * `if C is not None`  是否不是空值
 * `if C is None`  是否是空值
-
+* `global <var>`  标识为全局变量
+* `nonlocal <var>`  标识为上一级函数中的局部变量 
 
 
 #### 示例
@@ -489,4 +490,20 @@ smaller = x if x  < y else y
 with open('/etc/passwd', 'r') as f:
     for eachLine in f:
         #...
+
+
+
+gStatus = 'xxx'
+
+def testOne() :
+    global gStatus
+    gStatus = 'yyy'
+
+    lStatus = 'xxx'
+
+    def testTwo() :
+        nonlocal lStatus
+
+        lStatus = 'yyy'
+
 ```
