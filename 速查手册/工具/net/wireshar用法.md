@@ -25,7 +25,7 @@
 
 ### HTTP协议
 * `http.request.method == "GET"`  只显示get请求
-* `http.request.url contains admin` 只显示url中包含admin的请求
+* `http.request.uri contains admin` 只显示url中包含admin的请求
 * `http.request.code == 404`  只显示状态码为404的请求
 * `http.content_encoding == "gzip"` 只显示带压缩的请求
 
