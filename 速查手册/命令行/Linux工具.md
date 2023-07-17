@@ -183,3 +183,23 @@ curl -G -d 'g=kitties' -d 'count=20' http://google.com/search
 
 
 
+## netstat
+
+### 功能
+1. 显示网络协议相关的统计信息
+2. 检验端口的网络连接情况
+
+### 参数
+* `-a` 显示所有连接
+* `-t` 显示tcp连接
+* `-u` 显示udp连接
+* `-r` 显示路由信息  
+
+* `-n` 显示IP地址和端口信息
+* `-p` 显示使用socket的程序名称和识别码
+
+
+### 示例
+* `netstat -tlnp` 显示TCP连接的监听地址、端口和程序信息
+* `netstat -tn | grep -v ESTABLISHED` 查看非正常连接
+* `netstat -t | wc -l` 统计TCP连接数
