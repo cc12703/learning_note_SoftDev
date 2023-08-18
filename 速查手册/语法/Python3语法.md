@@ -193,7 +193,7 @@ for index, val in enumerate(['one', 'two']) :
 
 * `<view> = <dict>.keys()`   返回键视图，包含所有的键
 * `<view> = <dict>.values()` 返回值视图，包含所有的值
-* `<view> = <dict>.items()`  返回条目视图，包含键-值元组
+* `<view> = <dict>.items()`  返回条目视图，包含键-值元组（key,value）
 
 
 ## 类型相关
@@ -260,6 +260,52 @@ f"hello {name}, You are {arg}
 * `(<int> , <int>) = math.modf(<int>)`  获取整数部分和小数部分
 
 
+### namedtuple
+* `<cls> = namedtuple(<cls_name>, [<field_name>, ...])`  创建命名元组
+* `<obj> = <cls>(<val>, ...)` 创建对象
+* `<obj> = <cls>(<field_name>=<val>)`  创建对象
+* `<val> = <obj>.<field_name>`  获取属性
+
+#### 示例
+```python
+Student = namedtuple("Student", ['name', 'gender', 'age', 'number'])
+
+stu1 = Student('KK', 'M', 23, 2021)
+age = stu1.age
+
+stu2 = Student(name='KK', gender='M', age=23, number=2021)
+```
+
+### dataclass
+* 定义数据类，自动生成`__init__`,`__repr__`,`__eq__`,`__hash__`
+* `@dataclass(frozen=True)`   定义不可变的数据类
+* `<field> = field(default_factory=list)`  定义空列表为默认值
+* `<field>: InitVar[]`  该属性只用于初始化
+* `def __post_init__(self)`  定义初始化回调函数
+* `dataclasses.asdict()`  将实例转换为字典
+* `dataclasses.astuple()`   将实例转换为元组
+
+
+#### 示例
+```python
+@dataclass
+class C:
+    a: int
+    b: int
+    c: int = field(init=False)
+    j: int = None
+    mylist: List[int] = field(default_factory=list)
+
+    database: InitVar[DatabaseType] = None
+ 
+    def __post_init__(self):
+        self.c = self.a + self.b
+        self.j = database.lookup('j')
+```
+
+
+
+
 ## 语法
 
 
@@ -269,6 +315,7 @@ f"hello {name}, You are {arg}
 * `from <module> import *`  导入模块的所有内容
 * `import <module> as var_name`  导入模板绑定到局部变量
 * `from module import name as var_name` 导入模板指定部分并绑定到局部变量
+
 
 
 #### 示例
@@ -355,6 +402,106 @@ lambda x, y: x + y
 a = lambda x, y=2: x + y
 a(3)
 a(3, 6)
+```
+
+
+### 装饰器
+
+#### 定义
+
+* 基于函数，不带参数
+```python
+def decorator(func):
+    def wrapper(*args, **kwargs):
+        return func(*args, **kwargs)
+    return wrapper
+
+@decorator
+def function():
+    print("hello, decorator")
+
+# hello, decorator
+```
+
+* 基于函数，带参数
+```python
+def decorator(arg) :
+    def outwrapper(func) :
+        def wrapper(*args, **kwargs):
+            return func(*args, **kwargs)
+
+        return wrapper
+    return outwrapper
+
+@decorator(arg=xxx)
+def function():
+    print("hello, decorator")
+```
+
+* 基于类，不带参数
+```python
+class decorator(object) :
+
+    def __init__(self, func) :
+        self.func = func
+
+    def __call__(self, *args, **kwargs) :
+        return self.func(*args, **kwargs)
+
+
+@decorator
+def function():
+    print("hello, decorator")
+```
+
+
+* 基于类，带参数
+```python
+class decorator(object) :
+
+    def __init__(self, arg) :
+        self.arg = arg
+
+    def __call__(self, func) :
+        def wrapper(*args, **kwargs):
+            func(*args, **kwargs)
+        return wrapper
+
+
+@decorator
+def function(arg=xxx):
+    print("hello, decorator")
+```
+
+
+#### property
+
+* `@property` 将函数标记为属性的读函数
+* `@xxx.setter` 将函数标记为属性的写函数
+* `@xxx.deleter` 将函数标记为属性的删除函数
+
+##### 示例
+```python
+class Student(object):
+    
+    @property
+    def age(self):
+        return self._age
+
+    @age.setter
+    def age(self, value):
+        self._age = value
+
+    @age.deleter
+    def age(self):
+        del self._age
+
+
+test = Student()
+
+test.age = 25  # 设置属性
+test.age  # 查询属性
+del test.age  # 删除属性
 ```
 
 
