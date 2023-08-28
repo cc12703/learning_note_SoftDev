@@ -133,3 +133,36 @@ grep -E "TestOne|TestTwo" test.txt  #匹配多个字符串
 
 ## awk
 * 用于处理文本文件
+* 格式：`awk <option> script file`
+
+### option
+* `-F` 指定分隔符，默认为空格或tab
+* `-v <var>=<value>` 复制自定义变量
+
+
+### script
+* `{print $x,$x}` 输出指定的字段
+
+
+### 示例
+```sh
+
+awk '{print $1,$4}' log.txt      #输出第1，4项
+awk -F, '{print $1,$2}' log.txt  #逗号分割，输出第1，2项
+
+```
+
+
+### 变量
+* `$n` 当前记录的第n个字段
+* `$0` 当前的输入记录
+
+
+## wc
+* 计算文件的字数、行数、字节数
+* 格式: `wc <option> file`
+
+### option
+* `-c` 显示字节数
+* `-l --lines` 显示行数
+* `-w --words` 显示字数

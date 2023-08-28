@@ -11,12 +11,27 @@
 
 ## 基础
 * 函数参数的默认值是一个全局对象
+* `*args` 可变参数,是一个元组
+* `**kwargs` 可变参数，是一个字典
 
 ### 示例
 ```python
 #如果使用默认值，infos会指向一个全局数组
 def xxx(infos: List[str] = []) :
     pass
+
+
+def test_arg(*args):
+    print(args)
+
+test_arg(1,2,3)    #(1,2,3)
+test_arg(*(1,2,3)) #(1,2,3)
+
+def test_kwargs(**kwargs):
+    print(kwargs)
+
+test_kwargs(y=2, z=3)  #{'y':2, 'z':3}
+test_kwargs(**{'y':2, 'z':3}) #{'y':2, 'z':3}
 ```
 
 ## 集合
