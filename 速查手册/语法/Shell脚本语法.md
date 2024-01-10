@@ -11,7 +11,7 @@
 * `:<< <char> ..... <char>` 多行注释
 * 反引号可以捕获命令输出，赋值给变量
 * `[ expr ]` 或 `[[ expr ]]`  定义条件判断
-
+* `;` 用于在单行语句中区分代码块
 
 ### 示例
 ```sh
@@ -23,6 +23,9 @@
 注释内容...
 注释内容...
 !
+
+if [ <cond> ]; then <statement> ; fi
+
 ```
 
 ## 变量
@@ -138,8 +141,13 @@ val=`expr $b % $a`
 
 
 ### 逻辑
+* `[ -n expr1 ]`  逻辑非
 * `[[ expr1 && expr2 ]]` 逻辑与
+* `[[ expr1 ]] && [[ expr2 ]]` 逻辑与
+* `[ expr1 -a expr2 ]`  逻辑与
 * `[[ expr1 || expr2 ]]` 逻辑或
+* `[[ expr1 ]] || [[ expr2 ]]` 逻辑或
+* `[ expr1 -o expr2 ]`  逻辑或
 
 
 ### 字符串
@@ -181,9 +189,11 @@ val=`expr $b % $a`
 
 ### if
 ```sh
-if condition ; then
+if condition
+then
     command
-elif condition ; then
+elif condition
+then
     command
 else
     command

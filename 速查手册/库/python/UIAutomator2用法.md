@@ -109,6 +109,11 @@ if isExists :  #会检测一次
 * `<uobj>.clear_text()`  清除文本值
 
 
+### 滑动
+* 对象需要是列表控件的父控件
+* `<uobj>.fling.toBeginning()`  滑动到最顶部
+* `<uobj>.fling.toEnd()` 滑动到最底部
+
 ## 界面操作
 * `d.swipe_ext("right")` 手指右滑
 * `d.swipe_ext("left")` 手指左滑

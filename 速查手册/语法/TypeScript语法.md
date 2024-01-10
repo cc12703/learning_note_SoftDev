@@ -581,9 +581,17 @@ async function foo() {
 
 
 ### 二进制数据
-* ArrayBuffer 存储二进制数据，不能直接读写
-* TypeArray   用于操作ArrayBuffer的一种视图，使用数组方式操作
+* `Blob`：浏览器上支持文件操作的二进制对象
+* `Buffer`：node.js上的二进制缓冲区
+* `ArrayBuffer`：浏览器上通用的二进制缓冲区，不能直接读写
+* `TypeArray`：用于操作ArrayBuffer的一种视图，使用数组方式操作
   * 包括：Int8Array, Int16Array, Int32Array, Float32Array
+* `DataView`：用于读写ArrayBuffer的一种视图
+
+
+#### 图示
+![](http://picbed.cc12703.com/20231020100447.png)
+
 
 #### ArrayBuffer
 * `obj = new ArrayBuffer(len)`  创建一个对象

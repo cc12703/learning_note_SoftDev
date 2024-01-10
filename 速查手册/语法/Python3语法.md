@@ -10,12 +10,41 @@
 
 
 ## 基础
+* `X if C else Y` 三元操作符
+* `with context_expr [as var]` 用于简化资源的分配和释放
+* `if C is not None`  是否不是空值
+* `if C is None`  是否是空值
+* `global <var>`  标识为全局变量
+* `nonlocal <var>`  标识为上一级函数中的局部变量
 * 函数参数的默认值是一个全局对象
 * `*args` 可变参数,是一个元组
 * `**kwargs` 可变参数，是一个字典
 
 ### 示例
 ```python
+smaller = x if x  < y else y
+
+with open('/etc/passwd', 'r') as f:
+    for eachLine in f:
+        #...
+
+
+
+gStatus = 'xxx'
+
+def testOne() :
+    global gStatus
+    gStatus = 'yyy'
+
+    lStatus = 'xxx'
+
+    def testTwo() :
+        nonlocal lStatus
+
+        lStatus = 'yyy'
+
+
+
 #如果使用默认值，infos会指向一个全局数组
 def xxx(infos: List[str] = []) :
     pass
@@ -647,36 +676,94 @@ Server = Tuple[Address, ConnectionOptions]
     * 等价于 `Union[<type>, None]`
 
 
-### 其他
-* `X if C else Y` 三元操作符
-* `with context_expr [as var]` 用于简化资源的分配和释放
-* `if C is not None`  是否不是空值
-* `if C is None`  是否是空值
-* `global <var>`  标识为全局变量
-* `nonlocal <var>`  标识为上一级函数中的局部变量 
 
 
-#### 示例
+## 异步IO
+
+* 在单线程上启动事件循环，监听事件并处理
+
+### 要点
+* `async def <func>()`   协程函数
+* `Coro` 协程对象，由协程函数返回，可等待对象
+* `Future`   存放结果，可等待对象
+* `Task`     调度运行协程，可等待对象
+* `await`    暂停当前协程，等待协程执行完成
+
+
+### 运行
+* `asyncio.run(<coro>)` 运行入口点函数
+* `class asyncio.Runner` 运行上下文
+* `asyncio.gather(<aws>, return_exceptions)` 并发执行多个协程并等待完成
+    * 所有可等待对象都完成后，返回一个结果列表
+    * `return_exceptions=False` 异常会立刻传播给调用者
+    * `return_exceptions=True`  异常会聚合到结果中
+* `<done>, <pending> = await asyncio.wait(<aws>, return_when)`  运行并等待满足特定条件
+    * `return_when=FIRST_COMPLETED` 任意可等待对象结束或取消
+    * `return_when=ALL_COMPLETED`   所有可等待对象结束或取消
+* `<iter> = asyncio.as_completed(<aws>)`  运行并返回一个协程迭代器
+    * 迭代器返回结束的可等待对象
+* `<coro> = asyncio.to_thread(<func>, <arg>)` 在不同线程中异步地运行函数
+* `<future> = asyncio.run_coroutine_threadsafe(<coro>, <loop>)` 向指定事件循环提交一个协程
+
+#### 例子
 ```python
-smaller = x if x  < y else y
 
-with open('/etc/passwd', 'r') as f:
-    for eachLine in f:
-        #...
+with asyncio.Runner() as runner :
+    runner.run(main())
 
 
-
-gStatus = 'xxx'
-
-def testOne() :
-    global gStatus
-    gStatus = 'yyy'
-
-    lStatus = 'xxx'
-
-    def testTwo() :
-        nonlocal lStatus
-
-        lStatus = 'yyy'
-
+for coro in as_completed(aws) :
+    result = await coro
 ```
+
+
+### 任务
+* `<task> = asyncio.create_task(<coro>)` 创建并运行协程
+* `class asyncio.TaskGroup`  任务组上下文
+* `<bool> = <task>.done()`   是否已完成
+* `<task>.result()`          返回任务结果
+* `<task>.exception()`       返回任务异常
+* `<task>.cancelled()`       是否被取消
+* `<coro> = <task>.get_coro()` 返回协程对象
+* `<task>.cancel()`          取消任务
+    * 导致对协程抛出`CancelledError`异常
+
+
+#### 例子
+```python
+async with asyncio.TaskGroup() as tg :
+    t1 = tg.create_task(<coro>)
+```
+
+
+### 超时处理
+* `<future> = asyncio.sleep(<sec>)`  协程休眠
+* `<ctx> = asyncio.timeout(<sec>)` 超时上下文
+    * 抛出`TimeoutError`异常
+* `<coro> = asyncio.wait_for(<aw>, <sec>)` 带超时的等待协程运行完成
+
+#### 例子
+```python
+async with asyncio.timeout(10) :
+    await ....()
+
+try :
+    await asyncio.wait_for(test(), timeout=1.0)
+except TimeoutError :
+    ...
+```
+
+
+### 事件循环
+* `asyncio.get_running_loop()`  返回当前线程中正在运行的事件循环
+* `asyncio.get_event_loop()`  返回当前事件循环
+* `<loop> = asyncio.new_event_loop()`  创建一个事件循环
+* `<loop>.stop()`  停止事件循环
+* `<loop>.run_forever()`  运行事件循环直到`stop()`被调用
+
+* `<handle> = <loop>.call_soon(<func>, <arg>)` 立刻回调，在事件循环下次迭代时被调用
+* `<loop>.call_soon_threadsafe(<func>, <arg>)` 线程安全版本
+* `<loop>.call_later(<time>, <func>, <arg>)`  延迟回调
+* `<loop>.call_at(<timestamp>, <func>, <arg>)`    在特定时间戳回调
+
+* `<task> = <loop>.create_task(<coro>, <name>)` 创建任务并加入循环
