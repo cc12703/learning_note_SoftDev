@@ -45,10 +45,10 @@
 * `//xxx` 等于原生xpath
 * `xxx`  等价于 `//*[@text='xxx' or @content-desc='xxx' or @resource-id='xxx']`
 * `@xxx` 等价于 `//*[@resource-id="xxx"]`
-* `^xxx` 等价于 `//*[re:match(text(), '^xxx')]`
-* `xxx%` 等价于 `//*[starts-with(text(), 'xxx')]`
-* `%xxx` 等价于 `//*[ends-with(text(), 'xxx')]`
-* `%xxx%` 等价于 `//*[contains(text(), 'xxx')]`
+* `^xxx` 等价于 `//*[re:match(@text, '^xxx')]`
+* `xxx%` 等价于 `//*[starts-with(@text, 'xxx')]`
+* `%xxx` 等价于 `//*[ends-with(@text, 'xxx')]`
+* `%xxx%` 等价于 `//*[contains(@text, 'xxx')]`
 
 
 #### 示例
@@ -57,10 +57,10 @@
     //*[@resource-id="smartisanos:id/right_container"]
 
 ^.*道了
-    //*[re:match(text(), '^.*道了')]
+    //*[re:match(@text, '^.*道了')]
 
 %知道%
-    //*[contains(text(), '知道')]
+    //*[contains(@text, '知道')]
 
 
 搜索

@@ -225,6 +225,10 @@ for index, val in enumerate(['one', 'two']) :
 * `<dict> = dict(<iter>)`
 * `<dict> = dict(zip(keys, values))`
 
+* `<dict> = defaultdict(lambda: xxx)`   定义带默认值的字典
+* `<dict> = OrderedDict()`               定义键有序的字典
+* `<dict> = ChainMap(<dict>, ...)`      串联多个dict，依次进行查找
+
 * `<dict>[key] = value`  更新、添加条目
 * `val = <diect>[key]`   获取条目值，不存在则抛出异常
 * `del <dict>[key]`      删除条目
@@ -238,6 +242,21 @@ for index, val in enumerate(['one', 'two']) :
 * `<view> = <dict>.keys()`   返回键视图，包含所有的键
 * `<view> = <dict>.values()` 返回值视图，包含所有的值
 * `<view> = <dict>.items()`  返回条目视图，包含键-值元组（key,value）
+
+
+#### 示例
+```python
+d = defaultdict(lambda: 'None')
+print(d['ddd']) #return None
+
+
+defaults = {'color': 'red'}
+combined = ChainMap(cmdLineArgs, os.environ, defaults)
+print(combined['color'])
+
+od = OrderedDict([('a', 1), ('b', 2), ('c', 3)])
+print(od) #return {'a': 1, 'b': 2, 'c': 3}
+```
 
 
 ## 类型相关

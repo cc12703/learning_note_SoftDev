@@ -3,6 +3,13 @@
 # Requests用法
 
 
+
+## 概述
+
+### 链接
+* [Requests](https://github.com/psf/requests) 
+* [中文文档](https://requests.readthedocs.io/en/latest/)
+
 ## 发送请求
 
 * `requests.get(<url>)`  发送GET请求
