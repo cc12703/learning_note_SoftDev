@@ -203,3 +203,28 @@ curl -G -d 'g=kitties' -d 'count=20' http://google.com/search
 * `netstat -tlnp` 显示TCP连接的监听地址、端口和程序信息
 * `netstat -tn | grep -v ESTABLISHED` 查看非正常连接
 * `netstat -t | wc -l` 统计TCP连接数
+
+
+## systemctl
+
+### 功能
+* 检查和控制各种系统服务
+
+### 用例
+* `systemctl enable xxx.service` 激活服务、设为开机启动
+* `systemctl disable xxx.service` 取消开机启动
+* `systemctl start xxx.service` 启动服务
+* `systemctl stop xxx.service`  停止服务
+* `systemctl restart xxx.service`  重启服务
+* `systemctl daemon-reload`  加载所有配置信息
+
+
+## journalctl
+
+### 功能
+* 查看系统日志和各个服务日志
+
+### 用例
+* `journalctl -r -u xxx.service` 查看指定服务的日志，最新的日志在前面
+* `journalctl -b` 查看本次启动的日志
+* `journalctl -f` 实时显示最新日志
