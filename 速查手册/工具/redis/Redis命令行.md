@@ -6,10 +6,19 @@
 
 
 
-## 集群
+## 登录
+格式：`redis-cli -c <ip>`
+
+### 集群命令
+* 获取节点信息：`cluster nodes`
+* 加入节点：`cluster meet <ip> <port>`
+* 移除节点：`cluster forget <node-id>`
+
+
+## 集群操作
 格式：`redis-cli --cluster xxx`
 
-### 操作
+### 子命令
 * 创建主节点：`create <host:port> ...`
 * 创建主从节点：`create <host:port> --cluster-replicas 1`
     * 1 表示一个主节点需要一个从节点
