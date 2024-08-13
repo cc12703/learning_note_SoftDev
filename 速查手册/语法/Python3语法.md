@@ -243,6 +243,8 @@ for index, val in enumerate(['one', 'two']) :
 * `<view> = <dict>.values()` 返回值视图，包含所有的值
 * `<view> = <dict>.items()`  返回条目视图，包含键-值元组（key,value）
 
+* `{<key>: <val> for <key>, <val> in <list(tuple)>}`  字典推导式
+
 
 #### 示例
 ```python
@@ -256,6 +258,10 @@ print(combined['color'])
 
 od = OrderedDict([('a', 1), ('b', 2), ('c', 3)])
 print(od) #return {'a': 1, 'b': 2, 'c': 3}
+
+codes = [(880, 'Test1'), (110, 'Test2')]
+print({code: name for code, name in codes}) #return {880: 'Test1', 110: 'Test2'}
+
 ```
 
 
