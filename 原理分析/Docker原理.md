@@ -16,7 +16,7 @@
 ### cgroup
 
 #### 概述
-* control group, 是linux内裤的一个特性，用于限制和隔离一组进程对系统资源的使用。
+* control group, 是linux内核的一个特性，用于限制和隔离一组进程对系统资源的使用。
 * 资源包括：CPU， 内存，IO，网络带宽
 * 通过cgroupfs虚拟文件系统来提供接口
 
