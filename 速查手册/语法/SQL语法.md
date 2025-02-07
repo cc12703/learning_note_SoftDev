@@ -15,6 +15,39 @@
 * `/* */` 多行注释
 
 
+### 查询过程
+
+* 查询分为：逻辑查询 和 物理查询
+* 逻辑查询：表示查询应该产生什么样的结果
+* 物理查询：表示如何得到结果，会根据索引来优化
+
+#### 执行顺序
+```
+(8)  SELECT (9) DISTINCT <sel-list>
+(1)  FROM <left-table>
+(3)  <join-type> JOIN <right-table>
+(2)        ON <join-cond>
+(4)  WHERE <where-cond>
+(5)  GROUP BY <group-list>
+(6)  WITH ...
+(7)  HAVING <having-cond>
+(10) ORDER BY <order-list>
+(11) LIMIT <limit-num> 
+
+```
+
+1. 对左表和右表执行笛卡儿积
+2. 执行`ON过滤`
+3. 添加外部行
+4. 执行`WHERE过滤`
+5. 分组操作
+6. 执行`CUBE`或`ROLLUP`操作
+7. 执行`HAVING过滤`
+8. 选择指定列
+9. 去除重复数据
+10. 执行排序操作
+11. 取出指定行的记录
+
 
 
 ## 查询数据库

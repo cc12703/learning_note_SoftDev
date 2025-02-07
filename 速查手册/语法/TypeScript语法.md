@@ -103,6 +103,19 @@ type Callback = (data: string) => void
 * 用于遍历对象
 
 
+### 浅拷贝
+
+* `Object.assign( ... )`
+* `{ ... }`
+
+#### 示例
+```ts
+const obj = { foo: "foo", bar: "bar" }
+
+const cp1 = Object.assign({}, obj)
+const cp2 = { ...obj }
+```
+
 ## 集合
 
 ### 概述
