@@ -426,6 +426,18 @@ class Point3D extends Point {
     this.z = z
   }
 }
+
+
+//将class实例转换为狭义对象
+const person = new Person("Alice", 25);
+const obj = Object.assign({}, person);
+
+//将狭义对象转换为class实例
+const obj = { name: "Alice", age: 25 };
+const person = new Person();
+// 使用 Object.assign() 复制属性
+Object.assign(person, obj);
+
 ```
 
 

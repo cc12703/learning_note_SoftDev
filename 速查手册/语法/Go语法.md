@@ -47,10 +47,10 @@ const (
 
 
 ### 错误处理
-* `error`接口用于定义错误
-* `defer`关键字用于错误时的资源释放，最后的语句先执行
-* `panic()`函数用于上报错误，开始错误处理
-* `recover()`函数用于终止错误处理流程
+* `error`接口      用于定义错误
+* `defer`关键字    用于错误时的资源释放，最后的语句先执行
+* `panic()`函数    用于上报错误，开始错误处理
+* `recover()`函数  用于终止错误处理流程
 
 #### 示例
 ```go
@@ -88,7 +88,7 @@ panic(Error("..."))
 * `import <pkgname>`  使用绝对路径导入
     * 目录：`gopath/src/pkgname`
 * `import( . <pkgname>)` 调用函数时，可以省略包名
-* `import( f <pkgname>)` 重新定义导入的包名
+* `import( <name> <pkgname>)` 重新定义导入的包名
 
 
 #### 示例
@@ -127,6 +127,9 @@ switch {
 
 ## 类型
 
+### 概述
+* 大多数类型都是值语义（赋值时会进行复制）
+
 ### Any类型
 * `interface {}` 空接口
 
@@ -164,11 +167,13 @@ const {
 
 
 ### 函数
+* 匿名函数式一个闭包
 * 支持多返回值
 * `_` 跳过返回值
 * `func <name>(arg <type>, ...) (<type>, ...) { }`  定义函数
 * `func <name>(arg <type>, ...) (<name> <type>, ...) { }`  定义函数
 * `func <name>(arg ...<type>)`  定义变参
+* `func (arg <type>, ...) (<type>, ...) { }`  定义匿名函数
 * `type <name> func(<type>, ...) (<type>, ...)`  定义函数类型
 
 
@@ -188,11 +193,18 @@ func ReadWrite() bool {
     n, _ = f.Read(buf)
     ....
 }
+
+//匿名函数
+func (a, b int, z float64) bool {
+    ...
+}
 ```
 
 
-### 结构
-* `type <name> struct { <name> <type> ... }`  声明结构
+### 结构体
+* `type <name> struct { <name> <type> ... }`  定义结构体
+* `<val> := new(<type>)`     创建实例
+* `<val> := &<type>{ ... }`  创建实例
 * `<val> = <struct>.<name>`  读取属性
 * `<struct>.<name> = <val>`  设置属性
 * 使用匿名字段进行结构内嵌
@@ -213,7 +225,7 @@ P := Person{ age: 24, name: "xxx" }
 
 
 type Student struct {
-    Person
+    Person      //内嵌
     speciality string
 }
 
@@ -241,19 +253,23 @@ type IFile interface {
 ### 数组(array)
 * 长度也是数组类型的一部分
 * 数组不能改变长度
-* 数组是值类型（作为参数传递时会进行复制）
+* **数组是值类型（作为参数传递时会进行复制）**
 * `var <name> [<len>]<type>`  定义数组
 * `<name> := [<len>]<type>{ ... }`  定义并初始化数组
 * `<name> := [...]<type>{ ... }`    定义并初始化数组
+* `<val> := len(<name>)`     读取数组长度
 * `<val> = <name>[<index>]`  读取值
 * `<name>[<index>] = <val>`  赋值
+* `for <index>, <val> := range(<array>)` 遍历数组
 
 #### 示例
 ```go
 array := [5] {1, 2, 3, 4, 5}
+var array = [3][5] int   //二维数组
 length := len(array) 
 
 for i:=0; i<len(array); i++ {
+    arrayVal = array[i]
     ...
 }
 
@@ -265,7 +281,7 @@ for i, v := range(array) {
 
 ### 切片(slice)
 * 对数组的一个连续片段的引用
-* `var <name> []<type>`  定义切片
+* `var <name> []<type>`  定义切片变量
 * `<name> := []<type> { <val>, ... }` 定义并初始化切片
 * `<name> := make([]<type>, <num>, <cap>)`  创建切片
 * `<slice> = <slice>[<begin>:<end>]` 获取值，`<end>`不包含
@@ -278,8 +294,22 @@ for i, v := range(array) {
 * `copy(<dst-slice>, <src-slice>)`   拷贝元素
 * `for <index>, <val> := range <slice>` 遍历切片
 
+
+#### 示例
+```go
+var array [10]int = [10]int {1,2,3,4,5,6,7,8,9,10}
+
+var slice []int = array[:5]
+
+for _, v := range slice {
+    ...
+}
+```
+
+
+
 ### 字典(map)
-* `var <name> map[<key-type>]<val-type>`  定义字典
+* `var <name> map[<key-type>]<val-type>`  定义字典变量
 * `<name> := map[<key-type>]<val-type> { <key>:<val>, ... }`  定义并初始化字典
 * `<name> = make(map[<key-type>]<val-type>, <cap>)`  创建字典
 * `delete(<map>, <key>)`  删除元素
