@@ -205,3 +205,37 @@ netstat -tan    #Mac上查看端口占用
 
 ### 交互
 * `H` 显示线程详细信息
+
+
+## lsof
+* 查看打开的文件
+
+### option
+* `-i`   网络相关的打开文件
+* `-n`   不反查DNS
+* `-P`   不反查端口号
+* `-r`   指定刷新秒数
+* `-p`   指定PID
+* `-u`   指定用户
+* `-c`   指定命令前缀
+
+* `-t`   只输出PID
+* `-a`   多个条件组合（AND）
+
+
+### 示例
+```sh
+
+lsof -i:80  #查看指定端口的连接
+lsof -i tcp  #查看所有tcp连接
+lsof -i@192.168.1.100:22  #查看指定IP和端口的连接
+
+lsof -i -s TCP:LISTEN   #查看监听状态的tcp连接
+lsof -i -s TCP:ESTABLISHED  #查看已建立的tcp连接
+
+lsof -p 1234   #查看指定PID打开的文件
+lsof -c nginx  #查看nginx命令前缀打开的文件
+
+lsof -a -u alice -i  #查看指定用户的所有网络连接
+
+```

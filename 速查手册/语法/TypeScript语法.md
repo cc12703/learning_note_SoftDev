@@ -20,7 +20,8 @@
 * `??` 用于当表达式为null、undefined时，设置一个默认值
 * `?.`  可选链，当左值存在时才访问属性，不然返回一个undefined
 * 条件运算符`<cond> ? <val1> : <val2>`
-
+* `||` 将以下值都视为`false`
+  * 包括：`false`, `0`, `空字符串`, `null`, `undefined`, `NaN`
 
 #### 示例
 ```ts
