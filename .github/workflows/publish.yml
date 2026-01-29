@@ -39,24 +39,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: submit info
-        id: meta
-        uses: docker/metadata-action@v5
-        with: 
-          images: cc12703/learning_note_SoftDev
-          tags: type=ref,event=tag
-      - id: submit
-        uses: fjogeleit/http-request-action@v1
-        with:
-          url: 'http://notify.cc12703.com:3000/update/submit'
-          method: 'POST'
-          customHeaders: '{"Accept": "application/json", "Content-Type": "application/json"}'
-          data: '{"repoName" : "learning_note_SoftDev", "lastVer" : "${{steps.meta.outputs.version}}", "lastUrl" : "https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/learning_note_SoftDev.docset.tgz"}'
-          timeout: 30000
-      - id: submit_resp
-        run: echo ${{ steps.submit.outputs.response }}
-
-
         
       
         
