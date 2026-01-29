@@ -12,14 +12,14 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Prepare
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
-            node-version: '12'
+            node-version: '18'
       - run: sudo npm_config_user=root npm install -g @cc12703m/mddocsetbuilder@1.5.1
 
 
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
             path: './source'
 
@@ -29,40 +29,30 @@ jobs:
         working-directory: ${{ github.workspace }}
 
 
-      - name: Update to release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+      - name: Create Release and Upload Asset
+        id: release
+        uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          name: Release ${{ github.ref_name }}
           body: Release Document
-          draft: false
-          prerelease: false
-      - id: update_release
-        uses: actions/upload-release-asset@v1
+          files: ./out/learning_note_SoftDev.docset.tgz
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}  
-          asset_path: ./out/learning_note_SoftDev.docset.tgz
-          asset_name: learning_note_SoftDev.docset.tgz
-          asset_content_type: application/tgz
 
       - name: submit info
         id: meta
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v5
         with: 
           images: cc12703/learning_note_SoftDev
           tags: type=ref,event=tag
       - id: submit
-        uses: fjogeleit/http-request-action@v1.8.0
+        uses: fjogeleit/http-request-action@v1
         with:
           url: 'http://notify.cc12703.com:3000/update/submit'
           method: 'POST'
-          customHeaders: '{"Accept": "application/json"}'
-          data: '{"repoName" : "learning_note_SoftDev", "lastVer" : "${{steps.meta.outputs.version}}", "lastUrl" : "${{steps.update_release.outputs.browser_download_url}}"}'
+          customHeaders: '{"Accept": "application/json", "Content-Type": "application/json"}'
+          data: '{"repoName" : "learning_note_SoftDev", "lastVer" : "${{steps.meta.outputs.version}}", "lastUrl" : "https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/learning_note_SoftDev.docset.tgz"}'
+          timeout: 30000
       - id: submit_resp
         run: echo ${{ steps.submit.outputs.response }}
 
