@@ -50,6 +50,23 @@ effect((onCleanup) => {
 
 ### 指令
 
+* 一些类，为应用中的元素添加额外的行为
+
+* `ngClass` 添加、移除多个CSS类
+  * 与表达式、方法结合使用
+* `ngStyle` 同时设置多个内联样式
+
+#### 示例
+```html
+<div [ngClass]="isSpecial ? 'special' : ''">This div is special</div>
+
+<div [ngClass]="currentClasses">This div is initially saveable, unchanged, and special.</div>
+
+<div [ngStyle]="currentStyles">
+  This div is initially italic, normal weight, and extra large (24px).
+</div>
+```
+
 
 ## 模版语法
 
