@@ -28,7 +28,7 @@
 * 至少3个主节点，每个主节点至少一个从节点
 * 从节点只作为一个数据备份角色，不对外提供服务
 
-![](http://picbed.cc12703.com/20240225155702.png)
+![](https://raw.githubusercontent.com/cc12703/picbed/main/20240225155702.png)
 
 
 ### 数据分区
@@ -43,7 +43,7 @@
 * 键通过CRC16获取哈希值，再和槽位数取模，获取对应的槽位
 
 
-![](http://picbed.cc12703.com/20240225162033.png)
+![](http://raw.githubusercontent.com/cc12703/picbed/main/20240225162033.png)
 
 
 

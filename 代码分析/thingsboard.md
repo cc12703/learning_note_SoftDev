@@ -1,7 +1,7 @@
 
 # thingsboard
 
-
+[TOC]
 
 ## Actor系统
 
@@ -96,6 +96,54 @@ AppActor (系统级)
 * `TbQueueProducer` 生产者
 * `TbQueueConsumer` 消费者
 * `TbQueueAdmin`  主题管理
+
+
+
+## 通知中心
+
+### 组件
+* 接收者(Recipients)：定义谁会收到通知
+* 模版(Templates)：定义内容和交付方式
+* 规则(Rules)：定义触发的条件和时机
+
+
+### 信息
+* 接收用户ID `UserId` 
+* 通知类型 `NotificationType` 
+* 交付方式 `NotificationDeliveryMethod` 
+* 通知主题 `String` 
+* 通知内容 `String`
+* 通知详细信息 `NotificationInfo`
+    * 告警通知 `AlarmNotificationInfo`
+    * 通用通知 `GeneralNotificationInfo`
+    * 设备活动通知 `DeviceActivityNotificationInfo`
+* 通知状态 `NotificationStatus`
+* 额外配置 `JsonNode`
+
+### 触发源
+* 规则引擎：通过`SendNotification`节点
+* 告警事件：告警创建、更新、清除
+* 手动触发：通过 REST API
+
+
+### 核心类
+* `DefaultNotificationCenter` 通知中心
+* `NotificationChannel` 交付通道
+    * `SmsNotificationChannel` 短信交付
+    * `MobileAppNotificationChannel` 移动应用交付
+
+### 核心逻辑
+
+#### DefaultNotificationCenter.processNotificationRequest
+1. 检查速率限制
+1. 解析通知模版  `NotificationTemplate`
+1. 解析目标接收者 `NotificationTarget`
+1. 验证所有的交付通道
+1. 处理延时发送
+1. 异步处理流程
+    1. 循环处理所有的通知目标 `NotificationTarget`
+    1. 循环处理 接收者 × 交付方法 `NotificationRecipient`, `NotificationDeliveryMethod`
+    1. 使用交互通道发送通知 `NotificationChannel`
 
 
 ## 主要逻辑
