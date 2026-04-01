@@ -1,36 +1,36 @@
-
-
 name: Docset Build and Publish
-on: 
+
+on:
   push:
     tags:
       - "*"
+  workflow_dispatch: # 允许手动触发
 
+permissions:
+  contents: write # 创建 Release
+  pages: write # 部署 Pages
+  id-token: write # Pages 部署需要
 
 jobs:
   build-and-publish:
     runs-on: ubuntu-22.04
     steps:
-      - name: Prepare
+      - name: Prepare Node
         uses: actions/setup-node@v4
         with:
-            node-version: '18'
-      - run: sudo npm_config_user=root npm install -g @cc12703m/mddocsetbuilder@1.5.1
-
+          node-version: "18"
+      - run: sudo npm_config_user_root npm install -g @cc12703m/mddocsetbuilder@1.5.1
 
       - name: Checkout
         uses: actions/checkout@v4
         with:
-            path: './source'
-
+          path: "./source"
 
       - name: Build Docset
-        run: mddocsetbuilder ./source -o ./out -n learning_note_SoftDev -p tgz 
+        run: mddocsetbuilder ./source -o ./out -n learning_note_SoftDev -p tgz
         working-directory: ${{ github.workspace }}
 
-
       - name: Create Release and Upload Asset
-        id: release
         uses: softprops/action-gh-release@v2
         with:
           name: Release ${{ github.ref_name }}
@@ -39,6 +39,16 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-        
-      
-        
+      - name: Extract HTML for Pages
+        run: |
+          mkdir -p ./pages-output/html
+          tar xzf ./out/learning_note_SoftDev.docset.tgz -C ./pages-output
+          cp -r ./pages-output/learning_note_SoftDev.docset/Contents/Resources/Documents/* ./pages-output/html/
+
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./pages-output/html
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
