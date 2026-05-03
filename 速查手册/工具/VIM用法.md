@@ -29,6 +29,8 @@
 * `dd` 删除当前行，存入缓冲区
 * `J`  删除换行符
 
+* `u` 撤销最后一次修改
+* `Ctrl + r` 恢复最后一次撤销
 
 ## 翻页
 
@@ -67,3 +69,7 @@
 * `:set nonumber` 不显示行号
 * `:set list` 显示控制字符
 * `:set nolist` 不显示控制字符
+
+### 持久化撤销
+* `set undofile` 启用
+* `set undodir=~/.vim/undodir` 设置目录
